@@ -25,7 +25,6 @@
 }
 
 \author{\textbf{Grupo xx:}\\
-Nome1 - Número1 \\
 João Pedro Furriel de Moura Pinheiro - up201104913\\
 Ventura de Sousa Pereira - up201404690\\
 \linebreak\linebreak \\
@@ -86,20 +85,19 @@ Para comelar, cada jogador deverá colocar uma peça na zona de jogo, seguido pe
 O objetivo do jogo é recriar o padrão descrito na peça, à volta da mesma. No final ganha quem conseguir recriar mais padrões, quando se esgotarem as peças.
 \linebreak\linebreak\\
 \textbf{Regra}:
-Regra do Posionamento: 
-  Aquando a vez de um jogador, o mesmo apenas poderá colocar a sua peça adjacente a uma das já jogadas.
+  Na sua vez o jogador apenas poderá colocar a sua peça adjacente a uma das já jogadas.
 \linebreak\linebreak\\
 
 \includegraphics[scale=0.3]{../printscreens/niju.jpg} \linebreak
 \includegraphics[scale=0.5]{../printscreens/niju2.png} \linebreak
 
-Devem ser incluidas as fontes de informação (e.g. URLs em rodapé).
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Representação do Estado do Jogo}
 
-Inicialmente, o estado inicial do jogo será uma lista vazia [], visto que este é dinâmico. Modifica-se conforme a posição de cada peça jogada.
+Inicialmente, o estado inicial do jogo será uma lista que represente um espaço vazio, visto que este é dinâmico. Modifica-se conforme a posição de cada peça jogada.
 
 \textbf{Estado Inicial}:
 
@@ -115,7 +113,7 @@ Inicialmente, o estado inicial do jogo será uma lista vazia [], visto que este 
 \includegraphics[scale=0.8]{../printscreens/initial_board.png} \linebreak
 
 
-Num estado intermédio, o jogo terá algumas peças em jogo, constituindo a constituição doo mesmo.
+Num estado intermédio, o jogo terá algumas peças em jogo.
 
 \textbf{Possível representação}:
 
@@ -155,11 +153,7 @@ Num estado intermédio, o jogo terá algumas peças em jogo, constituindo a cons
 
 \includegraphics[scale=0.8]{../printscreens/intermediate_board.png} \linebreak
 
-Objetos P1 serão as peças, que, por sua vez, são uma matriz (lista de listas), cuja representação poderá ser:
-
-[[1,1,1],
-[0,0,1],
-[0,0,0]]
+O estado final é quando todas as peças já foram colocadas. Num hipotético jogo apenas com 11 peças, este seria um possível estado final.
 
 \textbf{Representação final}:
 
@@ -257,38 +251,28 @@ Objetos P1 serão as peças, que, por sua vez, são uma matriz (lista de listas)
 O padrão de cada peça é representado por B's ou W's, dependendo se a peça é preta ou branca, respetivamente. Os espaços vazios no tabuleiro são representados por uma matriz, de 3x3, de espaços. Além disso, os espaços vazios da peça são, também, representados por espaços.
 
 \textbf{Predicados usados para a impressão do tabuleiro}:
-
+\begin{lstlisting}
 printElement(X) :- X =:= 1, write(' B ').
-
 printElement(X) :- X =:= 2, write(' W ').
-
 printElement(X) :- X =:= -1, write('   ').
-
 printElement(X) :- X =:= 0, write('   ').
-
 printPieceRowSeparation(BoardRow) :-
-
-
 
 	BoardRow = [].
 
-
-\begin{lstlisting}
 printPieceRowSeparation(BoardRow) :-
 	
-BoardRow \= [],
-
-		 [\_ | Rest] = BoardRow,
+	BoardRow \= [],
+	[\_ | Rest] = BoardRow,
 	write(' --------- '),
 	printPieceRowSeparation(Rest).
 
 printPieceRow([X1,X2,X3]) :- 
 
-write('|'),
-
-    printElement(X1),
-    printElement(X2),
-    printElement(X3),
+	write('|'),
+	printElement(X1),
+	printElement(X2),
+        printElement(X3),
 	write('|').
 
 
@@ -299,7 +283,6 @@ printBoard(Board) :-
 printBoard(Board) :- 
 
 	[Row | Rest] = Board,
-
 	printPieceRowSeparation(Row),
 	nl,
 	printPiecesRow1(Row),
@@ -353,17 +336,17 @@ printPiecesRow3(BoardRow) :-
 \section{Movimentos}
 
 Antes de cada jogada, os jogadores podem rodar as suas peças, para esse efeito os predicados a usar serão:
-
-RotatePieceLeft(OldPiece, NewPiece)
-RotatePieceright(OldPiece, NewPiece)
-
+\begin{lstlisting}
+	RotatePieceLeft(OldPiece, NewPiece)
+	RotatePieceright(OldPiece, NewPiece)
+\end{lstlisting}
 Depois da rotação os jogadores deverão posicionar as peças no tabuleiro numa posição adjacente a uma das peças já existentes no tabuleiro. Para tal, os predicados serão:
-
-playPieceRight(CurrentBoard, Piece, Row, Column, ResultingBoard).
-playPieceDown(CurrentBoard, Piece, Row, Column, ResultingBoard).
-playPieceLeft(CurrentBoard, Piece, Row, Column, ResultingBoard).
-playPieceUp(CurrentBoard, Piece, Row, Column, ResultingBoard).
-
+\begin{lstlisting}
+	playPieceRight(CurrentBoard, Piece, Row, Column, ResultingBoard).
+	playPieceDown(CurrentBoard, Piece, Row, Column, ResultingBoard).
+	playPieceLeft(CurrentBoard, Piece, Row, Column, ResultingBoard).
+	playPieceUp(CurrentBoard, Piece, Row, Column, ResultingBoard).
+\end{lstlisting}
 
 
 
