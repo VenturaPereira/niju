@@ -39,7 +39,7 @@ printBoard(
 
 
 //empty board
-printBoard(
+initialBoard(X,
 
 	[
 		[

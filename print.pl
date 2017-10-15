@@ -75,6 +75,21 @@ printPiecesRow3(BoardRow) :-
 	printPiecesRow3(Rest).
 
 
+initialBoard(
+	[
+		[
+
+		 [[-1, -1, -1],
+		  [-1, -1, -1],
+		  [-1, -1, -1]
+		 ]
+
+		]
+		
+	]
+
+).
+
 
 
 %"reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/print.pl')."
