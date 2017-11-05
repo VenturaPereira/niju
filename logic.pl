@@ -1,83 +1,33 @@
-board([empty,empty,empty]).
+:-include('print.pl').
 
-piece1W(
+initialBoard(InitialBoard) :-
 
-	[
+  emptySpace(EmptySpace),
 
-		[1,1,1],
-		[0,0,1],
-		[0,0,0]
+	InitialBoard = [
 
-	]
+    [EmptySpace,EmptySpace,EmptySpace],
+    [EmptySpace,EmptySpace,EmptySpace],
+    [EmptySpace,EmptySpace,EmptySpace]
 
-).
+	].
 
+insertBoardRowBeggining(Board,NewBoard) :-
 
-getNElementOfList([H | _], 0, H).
+  emptySpace(EmptySpace),
+  insertRowBeggining(Board,NewBoard,EmptySpace).
 
-getNElementOfList(List,N,H) :-
+insertBoardRowEnd(Board,NewBoard) :-
 
-	N > 0,
-	N1 is N - 1,
-	[_ | Rest] = List,
-	getNElementOfList(Rest, N1, H).
+  emptySpace(EmptySpace),
+  insertRowEnd(Board,NewBoard,EmptySpace).
 
+insertBoardColumnBeggining(Board,NewBoard) :-
 
-getPieceOfBoard(Board, RowNumber, ColumnNumber, Piece) :-
+  emptySpace(EmptySpace),
+  insertColumnBeggining(Board,NewBoard,EmptySpace).
 
-	getNElementOfList(Board, RowNumber, Row),
-	getNElementOfList(Row, ColumnNumber, Piece).
+insertBoardColumnEnd(Board,NewBoard) :-
 
-
-
-playPieceRight(CurrentBoard, Piece, Row, Column, ResultingBoard).
-playPieceDown(CurrentBoard, Piece, Row, Column, ResultingBoard).
-playPieceLeft(CurrentBoard, Piece, Row, Column, ResultingBoard).
-playPieceUp(CurrentBoard, Piece, Row, Column, ResultingBoard).
-
-
-
-%"reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/logic.pl')."
-
-
-/*
-getPieceOfBoard(
-
-	[
-		%row1
-
-		[
-
-		 [[0, 1, 1],
-		  [0, 0, 1],
-		  [0, 0, 1]
-		 ],
-
-		 [[0, 2, 2],
-		  [0, 0, 0],
-		  [2, 0, 2]
-		 ]
-
-		],
-
-		%row2
-
-		[
-
-		 [[-1, -1, -1],
-		  [-1, -1, -1],
-		  [-1, -1, -1]
-		 ],
-
-		 [[1, 0, 1],
-		  [0, 0, 0],
-		  [1, 0, 1]
-		 ]
-
-		]
-		
-	], 0, 1, X
-
-	).
-
-*/
+  emptySpace(EmptySpace),
+  insertColumnEnd(Board,NewBoard,EmptySpace).

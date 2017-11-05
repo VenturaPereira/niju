@@ -1,20 +1,55 @@
-printElement(X) :- X =:= 1, write(' B ').
-printElement(X) :- X =:= 2, write(' W ').
+%"reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/print.pl')."
+
+:-include('pieces.pl').
+
+printElement(X) :- X =:= 1, write(' 1 ').
 printElement(X) :- X =:= -1, write('   ').
 printElement(X) :- X =:= 0, write('   ').
 
+printPlayerMark(player1) :- write(' W ').
+printPlayerMark(player2) :- write(' B ').
+printPlayerMark(empty) :- write('   ').
+
+emptySpace([[-1, -1, -1],[-1, -1, -1],[-1, -1, -1]]).
+
+printColumnNumber(NumberOfColumns) :-
+
+  printColumnNumber(NumberOfColumns,0).
+
+printColumnNumber(NumberOfColumns,NumberOfColumns).
+
+printColumnNumber(NumberOfColumns,Column) :-
+
+  write('     '),
+  write(Column),
+  write('     '),
+  NextColumn is Column + 1,
+  printColumnNumber(NumberOfColumns,NextColumn).
+
+printInitialPieceRowSeparation(BoardRow) :-
+
+  write('    --------- '),
+  [_ | Rest] = BoardRow,
+  printPieceRowSeparation(Rest).
+
+printPieceRowSeparation([]).
+
 printPieceRowSeparation(BoardRow) :-
 
-	BoardRow = [].
-
-printPieceRowSeparation(BoardRow) :-
-	
 	BoardRow \= [],
 	[_ | Rest] = BoardRow,
 	write(' --------- '),
 	printPieceRowSeparation(Rest).
 
-printPieceRow([X1,X2,X3]) :- 
+printFirstPieceRow([X1,X2,X3]) :-
+
+  write('   |'),
+  printElement(X1),
+  printElement(X2),
+  printElement(X3),
+  write('|').
+
+printPieceRow([X1,X2,X3]) :-
 
 	write('|'),
 	printElement(X1),
@@ -22,28 +57,63 @@ printPieceRow([X1,X2,X3]) :-
 	printElement(X3),
 	write('|').
 
-printBoard(Board) :-
+printFirstPieceRow2([X1,_,X3],PlayerColor,RowNumber) :-
 
-	Board = [].
+  write(RowNumber),
+  write('  |'),
+  printElement(X1),
+  printPlayerMark(PlayerColor),
+  printElement(X3),
+  write('|').
 
-printBoard(Board) :- 
+
+printPieceRow2([X1,_,X3],PlayerColor) :-
+
+  write('|'),
+  printElement(X1),
+  printPlayerMark(PlayerColor),
+  printElement(X3),
+  write('|').
+
+
+printFullBoard(Board) :-
+
+  nth0(0,Board,FirsRow),
+  length(FirsRow,NumberOfColumns),
+  write('   '),
+  printColumnNumber(NumberOfColumns),
+  nl,
+  printBoard(Board,0).
+
+
+printBoard([],_).
+
+printBoard(Board,RowNumber) :-
 
 	[Row | Rest] = Board,
-	printPieceRowSeparation(Row),
+	printInitialPieceRowSeparation(Row),
 	nl,
-	printPiecesRow1(Row),
+	printPiecesRow1FirstPiece(Row),
 	nl,
-	printPiecesRow2(Row),
+	printPiecesRow2FirstPiece(Row,RowNumber),
 	nl,
-	printPiecesRow3(Row),
+	printPiecesRow3FirstPiece(Row),
 	nl,
-	printPieceRowSeparation(Row),
+	printInitialPieceRowSeparation(Row),
 	nl,
-	printBoard(Rest).
+  NextRow is RowNumber + 1,
+	printBoard(Rest,NextRow).
 
-printPiecesRow1(BoardRow) :-
 
-	BoardRow = [].
+printPiecesRow1FirstPiece(BoardRow) :-
+
+  [Piece | Rest] = BoardRow,
+  [PieceRow1 | _] = Piece,
+  printFirstPieceRow(PieceRow1),
+  printPiecesRow1(Rest).
+
+
+printPiecesRow1([]).
 
 printPiecesRow1(BoardRow) :-
 
@@ -52,20 +122,36 @@ printPiecesRow1(BoardRow) :-
 	printPieceRow(PieceRow1),
 	printPiecesRow1(Rest).
 
-printPiecesRow2(BoardRow) :-
 
-	BoardRow = [].
+printPiecesRow2FirstPiece(BoardRow,RowNumber) :-
+
+	[Piece | Rest] = BoardRow,
+	[_,PieceRow2,_] = Piece,
+  playerFromPiece(Piece,Player),
+	printFirstPieceRow2(PieceRow2,Player,RowNumber),
+	printPiecesRow2(Rest).
+
+
+printPiecesRow2([]).
 
 printPiecesRow2(BoardRow) :-
 
 	[Piece | Rest] = BoardRow,
 	[_,PieceRow2,_] = Piece,
-	printPieceRow(PieceRow2),
+  playerFromPiece(Piece,Player),
+	printPieceRow2(PieceRow2,Player),
 	printPiecesRow2(Rest).
 
-printPiecesRow3(BoardRow) :-
 
-	BoardRow = [].
+printPiecesRow3FirstPiece(BoardRow) :-
+
+	[Piece | Rest] = BoardRow,
+	[_,_,PieceRow3] = Piece,
+	printFirstPieceRow(PieceRow3),
+	printPiecesRow3(Rest).
+
+
+printPiecesRow3([]).
 
 printPiecesRow3(BoardRow) :-
 
@@ -73,28 +159,3 @@ printPiecesRow3(BoardRow) :-
 	[_,_,PieceRow3] = Piece,
 	printPieceRow(PieceRow3),
 	printPiecesRow3(Rest).
-
-
-initialBoard(
-	[
-		[
-
-		 [[-1, -1, -1],
-		  [-1, -1, -1],
-		  [-1, -1, -1]
-		 ]
-
-		]
-		
-	]
-
-).
-
-
-
-%"reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/print.pl')."
-
-%printBoard([[1,0,0],[0,0,1],[0,0,1]]).
-
-%printPiecesRow3([[[1,0,0],[0,0,1],[0,0,1]], [[1,0,0],[0,0,1],[0,0,1]]]).
-
