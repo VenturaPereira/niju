@@ -1,5 +1,8 @@
 %reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/utils.pl').
 
+:- use_module(library(lists)).
+:- use_module(library(clpfd)).
+
 not(X) :- X, !, fail.
 not(_).
 

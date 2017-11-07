@@ -1,4 +1,4 @@
-:-include('print.pl').
+:-include('pieces.pl').
 
 initialBoard(InitialBoard) :-
 

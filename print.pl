@@ -1,4 +1,4 @@
-:-include('pieces.pl').
+:-include('logic.pl').
 
 printElement(X) :- X =:= 1, write(' 1 ').
 printElement(X) :- X =:= -1, write('   ').
@@ -199,7 +199,7 @@ printPlayerPieces(Pieces,Player) :-
   printPlayerPiecesIndexSeparation(NumberOfPieces),nl,
   printPlayerPiecesFirstRow(Pieces),nl,
   printPlayerPiecesSecondRow(Pieces,Player),nl,
-  printPLayerPiecesThirdRow(Pieces),nl,
+  printPlayerPiecesThirdRow(Pieces),nl,
   printPlayerPiecesIndexSeparation(NumberOfPieces),nl,nl.
 
 
@@ -221,11 +221,11 @@ printPlayerPiecesSecondRow(Pieces,Player) :-
   printPieceRow2(PieceSecondRow,Player),
   printPlayerPiecesSecondRow(Rest,Player).
 
-printPLayerPiecesThirdRow([]).
+printPlayerPiecesThirdRow([]).
 
-printPLayerPiecesThirdRow(Pieces) :-
+printPlayerPiecesThirdRow(Pieces) :-
 
   [CurrentPiece|Rest] = Pieces,
   [_,_,PieceThirdRow] = CurrentPiece,
   printPieceRow(PieceThirdRow),
-  printPLayerPiecesThirdRow(Rest).
+  printPlayerPiecesThirdRow(Rest).

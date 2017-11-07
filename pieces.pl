@@ -1,7 +1,6 @@
 %reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/pieces.pl').
 
 :- include('utils.pl').
-:- use_module(library(lists)).
 
 numberOfPieces(20).
 
@@ -25,6 +24,27 @@ piece(17,[[1,0,0],[0,x,1],[1,1,0]]).
 piece(18,[[1,0,0],[1,x,1],[0,1,0]]).
 piece(19,[[0,1,0],[1,x,1],[0,1,0]]).
 piece(20,[[1,0,1],[0,x,0],[1,0,1]]).
+
+rotatePiece(Piece,PieceRotated,l,1) :-
+  pieceRotate(Piece,PieceRotated,3).
+
+rotatePiece(Piece,PieceRotated,r,1) :-
+  pieceRotate(Piece,PieceRotated,1).
+
+rotatePiece(Piece,PieceRotated,_,2) :-
+  pieceRotate(Piece,PieceRotated,2).
+
+rotatePiece(Piece,Piece,_,N) :-
+  N > 2.
+
+
+
+pieceRotate(Piece,Piece,0).
+pieceRotate(Piece, PieceRotated, N) :-
+    transpose(Piece,PieceAux),
+    maplist(reverse,PieceAux,PieceAux2),
+    N1 is N-1,
+    pieceRotate(PieceAux2,PieceRotated,N1).
 
 buildPiecesP1(Pieces) :-
   buildPieces(player1,Pieces).

@@ -1,6 +1,6 @@
 %reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/testes.pl').
 
-:-include('logic.pl').
+:-include('interface.pl').
 
 testInsertRowBeggining(NewTable) :-
 
@@ -207,11 +207,10 @@ testPrintPlayerPieces :-
   buildPiecesP2(PiecesP2),
   printPlayerPieces(PiecesP2,player2).
 
-
-testRotatePiece :-
-
+testRotatePiece(Direction,Times) :-
   piece(1,Piece1),
-  write(Piece1).
+  rotatePiece(Piece1, Piece2,Direction,Times),
+  write(Piece2).
 
 testUpdateBoardRows(Row) :-
 
@@ -238,6 +237,26 @@ testPlayFirstPiece :-
   initialBoard(InitialBoard),
   playFirstPiece(InitialBoard, CurrentBoard, Piece),
   printFullBoard(CurrentBoard).
+
+testInterface(X,Y) :-
+   write('What direction?'),
+   read(X),
+   nl,
+   write('Number of times to rotate.'),
+   read(Y),
+   write(X),
+   write(Y).
+
+
+testInterfaceFunctionRotateUser:-
+
+  buildPiecesP1(Pieces),
+  printPlayerPieces(Pieces,player1),
+  nth0(4,Pieces,Piece),
+  rotatedPieceOfUser(Piece, PieceRotated),
+  replaceInPosition(Pieces,NewPieces,4,PieceRotated),
+  printPlayerPieces(NewPieces,player1).
+
 
 
 %reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/testes.pl').
