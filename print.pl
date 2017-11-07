@@ -1,5 +1,3 @@
-%"reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/print.pl')."
-
 :-include('pieces.pl').
 
 printElement(X) :- X =:= 1, write(' 1 ').
@@ -57,24 +55,22 @@ printPieceRow([X1,X2,X3]) :-
 	printElement(X3),
 	write('|').
 
-printFirstPieceRow2([X1,_,X3],PlayerColor,RowNumber) :-
+printFirstPieceRow2([X1,_,X3],Player,RowNumber) :-
 
   write(RowNumber),
   write('  |'),
   printElement(X1),
-  printPlayerMark(PlayerColor),
+  printPlayerMark(Player),
   printElement(X3),
   write('|').
 
-
-printPieceRow2([X1,_,X3],PlayerColor) :-
+printPieceRow2([X1,_,X3],Player) :-
 
   write('|'),
   printElement(X1),
-  printPlayerMark(PlayerColor),
+  printPlayerMark(Player),
   printElement(X3),
   write('|').
-
 
 printFullBoard(Board) :-
 
@@ -84,7 +80,6 @@ printFullBoard(Board) :-
   printColumnNumber(NumberOfColumns),
   nl,
   printBoard(Board,0).
-
 
 printBoard([],_).
 
@@ -104,14 +99,12 @@ printBoard(Board,RowNumber) :-
   NextRow is RowNumber + 1,
 	printBoard(Rest,NextRow).
 
-
 printPiecesRow1FirstPiece(BoardRow) :-
 
   [Piece | Rest] = BoardRow,
   [PieceRow1 | _] = Piece,
   printFirstPieceRow(PieceRow1),
   printPiecesRow1(Rest).
-
 
 printPiecesRow1([]).
 
@@ -122,7 +115,6 @@ printPiecesRow1(BoardRow) :-
 	printPieceRow(PieceRow1),
 	printPiecesRow1(Rest).
 
-
 printPiecesRow2FirstPiece(BoardRow,RowNumber) :-
 
 	[Piece | Rest] = BoardRow,
@@ -130,7 +122,6 @@ printPiecesRow2FirstPiece(BoardRow,RowNumber) :-
   playerFromPiece(Piece,Player),
 	printFirstPieceRow2(PieceRow2,Player,RowNumber),
 	printPiecesRow2(Rest).
-
 
 printPiecesRow2([]).
 
@@ -142,14 +133,12 @@ printPiecesRow2(BoardRow) :-
 	printPieceRow2(PieceRow2,Player),
 	printPiecesRow2(Rest).
 
-
 printPiecesRow3FirstPiece(BoardRow) :-
 
 	[Piece | Rest] = BoardRow,
 	[_,_,PieceRow3] = Piece,
 	printFirstPieceRow(PieceRow3),
 	printPiecesRow3(Rest).
-
 
 printPiecesRow3([]).
 
@@ -159,3 +148,56 @@ printPiecesRow3(BoardRow) :-
 	[_,_,PieceRow3] = Piece,
 	printPieceRow(PieceRow3),
 	printPiecesRow3(Rest).
+
+printPlayerPiecesIndexSeparation(NumberOfPieces) :-
+  printPlayerPiecesIndexSeparation(NumberOfPieces,0).
+
+printPlayerPiecesIndexSeparation(NumberOfPieces,NumberOfPieces).
+
+printPlayerPiecesIndexSeparation(NumberOfPieces,PieceNumber) :-
+
+  write(' --------- '),
+  NewNumber is PieceNumber + 1,
+  printPlayerPiecesIndexSeparation(NumberOfPieces,NewNumber).
+
+printPlayerPieceIndex(Index) :-
+
+  Index < 10,
+  write('|    '), write(Index), write('    |').
+
+printPlayerPieceIndex(Index) :-
+
+  Index >= 10,
+  write('|   '), write(Index), write('    |').
+
+printPlayerPiecesIndex(NumberOfPieces) :-
+
+  printPlayerPiecesIndex(NumberOfPieces,0).
+
+printPlayerPiecesIndex(NumberOfPieces,NumberOfPieces).
+
+printPlayerPiecesIndex(NumberOfPieces, PieceNumber) :-
+
+  printPlayerPieceIndex(PieceNumber),
+  NextPiece is PieceNumber + 1,
+  printPlayerPiecesIndex(NumberOfPieces,NextPiece).
+
+printPlayer1Pieces(Pieces) :-
+
+  length(Pieces,NumberOfPieces),
+  nl,
+  write('Pieces Player 1: '),nl,nl,
+  printPlayerPiecesIndexSeparation(NumberOfPieces),nl,
+  printPlayerPiecesIndex(NumberOfPieces),nl,
+  printPlayerPiecesIndexSeparation(NumberOfPieces),nl,
+  printPlayerPiecesFirstRow(Pieces).
+
+
+printPlayerPiecesFirstRow([]).
+
+printPlayerPiecesFirstRow(Pieces) :-
+
+  [CurrentPiece|Rest] = Pieces,
+  [PieceFirstRow,_,_] = CurrentPiece,
+  printPieceRow(PieceFirstRow),
+  printPlayerPiecesFirstRow(Rest).

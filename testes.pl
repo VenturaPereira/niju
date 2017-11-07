@@ -197,3 +197,19 @@ board2(
 	]
 
 ).
+
+
+testPrintPlayer1Pieces :-
+
+  buildPiecesP1(PiecesP1),
+  printPlayer1Pieces(PiecesP1).
+
+
+
+
+
+
+
+
+
+%
