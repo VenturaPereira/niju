@@ -182,15 +182,25 @@ printPlayerPiecesIndex(NumberOfPieces, PieceNumber) :-
   NextPiece is PieceNumber + 1,
   printPlayerPiecesIndex(NumberOfPieces,NextPiece).
 
-printPlayer1Pieces(Pieces) :-
+printPlayerTitle(player1) :-
+  write('Pieces Player 1: '),nl,nl.
+
+printPlayerTitle(player2) :-
+  write('Pieces Player 2: '),nl,nl.
+
+
+printPlayerPieces(Pieces,Player) :-
 
   length(Pieces,NumberOfPieces),
   nl,
-  write('Pieces Player 1: '),nl,nl,
+  printPlayerTitle(Player),
   printPlayerPiecesIndexSeparation(NumberOfPieces),nl,
   printPlayerPiecesIndex(NumberOfPieces),nl,
   printPlayerPiecesIndexSeparation(NumberOfPieces),nl,
-  printPlayerPiecesFirstRow(Pieces).
+  printPlayerPiecesFirstRow(Pieces),nl,
+  printPlayerPiecesSecondRow(Pieces,Player),nl,
+  printPLayerPiecesThirdRow(Pieces),nl,
+  printPlayerPiecesIndexSeparation(NumberOfPieces),nl,nl.
 
 
 printPlayerPiecesFirstRow([]).
@@ -201,3 +211,21 @@ printPlayerPiecesFirstRow(Pieces) :-
   [PieceFirstRow,_,_] = CurrentPiece,
   printPieceRow(PieceFirstRow),
   printPlayerPiecesFirstRow(Rest).
+
+printPlayerPiecesSecondRow([],_).
+
+printPlayerPiecesSecondRow(Pieces,Player) :-
+
+  [CurrentPiece|Rest] = Pieces,
+  [_,PieceSecondRow,_] = CurrentPiece,
+  printPieceRow2(PieceSecondRow,Player),
+  printPlayerPiecesSecondRow(Rest,Player).
+
+printPLayerPiecesThirdRow([]).
+
+printPLayerPiecesThirdRow(Pieces) :-
+
+  [CurrentPiece|Rest] = Pieces,
+  [_,_,PieceThirdRow] = CurrentPiece,
+  printPieceRow(PieceThirdRow),
+  printPLayerPiecesThirdRow(Rest).

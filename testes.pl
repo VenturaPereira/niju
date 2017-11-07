@@ -199,17 +199,45 @@ board2(
 ).
 
 
-testPrintPlayer1Pieces :-
+testPrintPlayerPieces :-
 
   buildPiecesP1(PiecesP1),
-  printPlayer1Pieces(PiecesP1).
+  printPlayerPieces(PiecesP1,player1),
+
+  buildPiecesP2(PiecesP2),
+  printPlayerPieces(PiecesP2,player2).
 
 
+testRotatePiece :-
+
+  piece(1,Piece1),
+  write(Piece1).
+
+testUpdateBoardRows(Row) :-
+
+  board2(Board2),
+  updateBoardRows(Board2, UpdatedBoard,Row),
+  printFullBoard(UpdatedBoard).
+
+testUpdateBoardColumns(Column) :-
+
+  board2(Board2),
+  updateBoardColumns(Board2, UpdatedBoard,Column),
+  printFullBoard(UpdatedBoard).
+
+testGrowBoard(Row, Column) :-
+
+  board2(Board2),
+  growBoard(Board2, NewBoard, Row, Column),
+  printFullBoard(NewBoard).
+
+testPlayFirstPiece :-
+
+  buildPiecesP1(Pieces),
+  nth0(3,Pieces,Piece),
+  initialBoard(InitialBoard),
+  playFirstPiece(InitialBoard, CurrentBoard, Piece),
+  printFullBoard(CurrentBoard).
 
 
-
-
-
-
-
-%
+%reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/testes.pl').

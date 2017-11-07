@@ -27,6 +27,29 @@ replace(Old, New, InitialList, AuxList, FinalList) :-
   append(AuxList,[Some],AuxList2),
   replace(Old,New,Rest,AuxList2,FinalList).
 
+replaceInPosition(List,NewList,Position,Element) :-
+
+  replaceInPosition(List, NewList, [], Position, 0, Element).
+
+replaceInPosition(List, NewList, ListAux, Position, Position, Element) :-
+
+  [_|T] = List,
+  append(ListAux, [Element], ListAux2),
+  append(ListAux2, T, NewList).
+
+
+replaceInPosition(List, NewList, ListAux, Position, PositionAux, Element) :-
+
+  write('List Aux: '),
+  write(ListAux),nl,
+  write('Position Aux: '),
+  write(PositionAux),nl,
+
+  Position > PositionAux,
+  [H|T] = List,
+  append(ListAux,[H],ListAux2),
+  NewPosition is PositionAux + 1,
+  replaceInPosition(T, NewList, ListAux2, Position, NewPosition, Element).
 
  %Remove one element of a list, the first that is found
   %param Element - Element to be removed
@@ -106,3 +129,18 @@ insertColumnEnd(MatrixBefore,MatrixAfter,MatrixAux,Cell) :-
   append(CurrentRow,[Cell],NewRow),
   append(MatrixAux,[NewRow],MatrixAux2),
   insertColumnEnd(Rest,MatrixAfter,MatrixAux2,Cell).
+
+
+getMatrixElement(Matrix,Element, Row, Column) :-
+
+  nth0(Row, Matrix, NthRow),
+  nth0(Column, NthRow, Element).
+
+replaceMatrixElement(Matrix, NewMatrix, Row, Column, NewElement) :-
+
+  nth0(Row, Matrix, NthRow),
+  replaceInPosition(NthRow, NewRow, Column, NewElement),
+  replaceInPosition(Matrix, NewMatrix, Row, NewRow).
+
+
+%
