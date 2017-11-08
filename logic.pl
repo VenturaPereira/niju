@@ -72,10 +72,93 @@ growBoard(CurrentBoard, GrownBoard, Row, Column) :-
   updateBoardColumns(GrownBoardRows, GrownBoard, Column).
 
 
-playFirstPiece(InitialBoard, CurrentBoard, Piece) :-
+getPieceFromBoard(Board, Row, Column, Piece) :-
 
-  replaceMatrixElement(InitialBoard, CurrentBoard, 1, 1, Piece).
+  getMatrixElement(Board, Piece, Row, Column).
 
+getPieceFromBoard(Board, Row, Column, EmptySpace) :-
+
+  \+ getMatrixElement(Board, EmptySpace, Row, Column),
+  emptySpace(EmptySpace).
+
+
+playFirstPiece(InitialBoard, CurrentBoard, Pieces, PieceNumber, NewPieces) :-
+
+  nth0(PieceNumber,Pieces,Piece),
+  replaceMatrixElement(InitialBoard, CurrentBoard, 1, 1, Piece),
+  remove(Piece,Pieces,NewPieces).
+
+
+playPiece(Board, NewBoard, Row, Column, PieceNumber, Pieces, NewPieces) :-
+
+  validPlayEmptySpace(Board, Row, Column),
+  nl, write('valid play'), nl,
+  nth0(PieceNumber,Pieces,Piece),
+  replaceMatrixElement(Board, BoardWithPiece, Row, Column, Piece),
+  growBoard(BoardWithPiece, NewBoard, Row, Column),
+  remove(Piece,Pieces,NewPieces).
+
+playPiece(Board,Board, Row, Column, _, Pieces, Pieces) :-
+
+  \+ validPlayEmptySpace(Board,Row,Column),
+  nl, write('invalid play'), nl.
+
+validPlayEmptySpace(Board, Row, Column) :-
+
+  getMatrixElement(Board, Element, Row, Column),
+  emptySpace(EmptySpace),
+  EmptySpace == Element,
+
+  UpRow is Row - 1,
+  DownRow is Row + 1,
+  RightColumn is Column + 1,
+  LeftColumn is Column - 1,
+
+  getPieceFromBoard(Board, UpRow, Column, ElementUp),
+  getPieceFromBoard(Board, DownRow, Column, ElementDown),
+  getPieceFromBoard(Board, Row, RightColumn, ElementRight),
+  getPieceFromBoard(Board, Row, LeftColumn, ElementLeft),
+
+  (ElementUp \= EmptySpace ; ElementDown \= EmptySpace ; ElementLeft \= EmptySpace ; ElementRight \= EmptySpace).
+
+retrievePiecePattern(Piece, _, _, _, []) :-
+
+  [[-1|_]|_] = Piece.
+
+retrievePiecePattern(Piece, Row, Column, Player, Pattern) :-
+
+  playerFromPiece(Piece, Player),
+
+  replaceMatrixElement(Piece, NeutralPiece, 1, 1, 0),
+
+  [R1,R2,R3] = NeutralPiece,
+
+  LeftColumn is Column - 1,
+  RowNorth is Row - 1,
+  RowSouth is Row + 1,
+
+  parsePieceRow(R1,R1Pattern, [], RowNorth, LeftColumn),
+  parsePieceRow(R2,R2Pattern, [], Row, LeftColumn),
+  parsePieceRow(R3,R3Pattern, [], RowSouth, LeftColumn),
+  append(R1Pattern, R2Pattern, RAux),
+  append(RAux, R3Pattern, Pattern).
+
+
+parsePieceRow([],List, List,_,_).
+
+parsePieceRow(Row, List, ListAux, RowNumber, ColumNumber) :-
+
+  [1| Rest] = Row,
+  append(ListAux,[RowNumber,ColumNumber], ListAux2),
+
+  NewColumnNumber is ColumNumber + 1,
+  parsePieceRow(Rest,List,ListAux2,RowNumber,NewColumnNumber).
+
+parsePieceRow(Row,List, ListAux, RowNumber,ColumNumber) :-
+
+  [0| Rest] = Row,
+  NewColumnNumber is ColumNumber + 1,
+  parsePieceRow(Rest,List, ListAux,RowNumber, NewColumnNumber).
 
 
 

@@ -229,3 +229,13 @@ printPlayerPiecesThirdRow(Pieces) :-
   [_,_,PieceThirdRow] = CurrentPiece,
   printPieceRow(PieceThirdRow),
   printPlayerPiecesThirdRow(Rest).
+
+
+
+printIsolatedPiece([R1,R2,R3],Player) :-
+
+  write(' ---------'),nl,
+  printPieceRow(R1),nl,
+  printPieceRow2(R2,Player),nl,
+  printPieceRow(R3),nl,
+  write(' ---------'),nl.

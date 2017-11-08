@@ -7,7 +7,7 @@ numberOfPieces(20).
 piece(1,[[1,1,1],[0,x,1],[0,0,0]]).
 piece(2,[[1,1,1],[0,x,0],[0,0,1]]).
 piece(3,[[1,1,1],[0,x,0],[0,1,0]]).
-piece(4,[[1,1,1],[0,x,1],[1,0,0]]).
+piece(4,[[1,1,1],[0,x,0],[1,0,0]]).
 piece(5,[[1,1,1],[1,x,0],[0,0,0]]).
 piece(6,[[1,1,0],[0,x,1],[0,0,1]]).
 piece(7,[[1,1,0],[0,x,1],[0,1,0]]).
@@ -36,8 +36,6 @@ rotatePiece(Piece,PieceRotated,_,2) :-
 
 rotatePiece(Piece,Piece,_,N) :-
   N > 2.
-
-
 
 pieceRotate(Piece,Piece,0).
 pieceRotate(Piece, PieceRotated, N) :-

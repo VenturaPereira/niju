@@ -2,6 +2,11 @@
 
 :-include('interface.pl').
 
+testPrintIsolatedPiece(PieceNumber) :-
+
+  piece(PieceNumber,Piece),
+  printIsolatedPiece(Piece,player1).
+
 testInsertRowBeggining(NewTable) :-
 
   M = [
@@ -257,6 +262,48 @@ testInterfaceFunctionRotateUser:-
   replaceInPosition(Pieces,NewPieces,4,PieceRotated),
   printPlayerPieces(NewPieces,player1).
 
+
+testPlayPiece(Row,Column) :-
+
+  initialBoard(IB),
+  buildPiecesP1(Pieces),
+
+  printFullBoard(IB),
+  printPlayerPieces(Pieces,player1),
+
+  playFirstPiece(IB, NewBoard, Pieces, 5, NewPieces),
+
+  printFullBoard(NewBoard),
+  printPlayerPieces(NewPieces,player1),
+
+
+  playPiece(NewBoard, NextBoard, Row,Column,10,NewPieces, NewPieces2),
+
+
+  printFullBoard(NextBoard),
+  printPlayerPieces(NewPieces2, player1).
+
+
+testGetPieceFromBoard(Row,Column) :-
+
+  board2(Board2),
+  printFullBoard(Board2),
+  getPieceFromBoard(Board2, Row, Column, Piece),
+  printIsolatedPiece(Piece,empty).
+
+
+testRetrievePattern(PieceNumber) :-
+
+  buildPiecesP1(Pieces),
+  nth0(PieceNumber,Pieces,Piece),
+
+  retrievePiecePattern(Piece, 1,1, Player, Pattern),
+
+  write('Player: '),
+  write(Player),nl,
+
+  write('Pattern: '),
+  write(Pattern).
 
 
 %reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/testes.pl').

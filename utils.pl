@@ -43,11 +43,6 @@ replaceInPosition(List, NewList, ListAux, Position, Position, Element) :-
 
 replaceInPosition(List, NewList, ListAux, Position, PositionAux, Element) :-
 
-  write('List Aux: '),
-  write(ListAux),nl,
-  write('Position Aux: '),
-  write(PositionAux),nl,
-
   Position > PositionAux,
   [H|T] = List,
   append(ListAux,[H],ListAux2),
