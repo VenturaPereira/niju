@@ -125,9 +125,7 @@ retrievePiecePattern(Piece, _, _, _, []) :-
 
   [[-1|_]|_] = Piece.
 
-retrievePiecePattern(Piece, Row, Column, Player, Pattern) :-
-
-  playerFromPiece(Piece, Player),
+retrievePiecePattern(Piece, Row, Column, Pattern) :-
 
   replaceMatrixElement(Piece, NeutralPiece, 1, 1, 0),
 
@@ -165,6 +163,67 @@ parsePieceRow(Row,List, ListAux, RowNumber,ColumNumber) :-
 
 
 
+
+calculatePlayerScoreInPiece(Board,Row,Column,Score,Player) :-
+
+  playerScoreInPiece(Board,Row,Column,Score,Player).
+
+playerScoreInPiece(Board, Row, Column, 1,Player) :-
+
+  playerGoodPiece(Board,Row,Column,Player).
+
+playerScoreInPiece(Board, Row, Column, 0,Player) :-
+
+  \+ playerGoodPiece(Board,Row,Column,Player).
+
+playerGoodPiece(Board, Row, Column,Player) :-
+
+  getPieceFromBoard(Board,Row,Column, Piece),
+
+  retrievePiecePattern(Piece, Row, Column, PiecePattern),
+
+  [RowPiece1,ColumnPiece1,RowPiece2,ColumnPiece2,RowPiece3,ColumnPiece3,RowPiece4,ColumnPiece4] = PiecePattern,
+
+  getPieceFromBoard(Board, RowPiece1, ColumnPiece1, Piece1),
+  getPieceFromBoard(Board, RowPiece2, ColumnPiece2, Piece2),
+  getPieceFromBoard(Board, RowPiece3, ColumnPiece3, Piece3),
+  getPieceFromBoard(Board, RowPiece4, ColumnPiece4, Piece4),
+
+  playerFromPiece(Piece1,Player),
+  playerFromPiece(Piece2,Player),
+  playerFromPiece(Piece3,Player),
+  playerFromPiece(Piece4,Player).
+
+
+calculateScoreInRow(Board,RowScore,RowNumber,Player) :-
+
+  [FirstRow|_] = Board,
+  length(FirstRow, NumberOfColumns),
+  calculateScoreInRow(Board,RowScore,RowNumber, 0, 0, NumberOfColumns,Player).
+
+calculateScoreInRow(_,RowScore,_,RowScore,NumberOfColumns,NumberOfColumns,_).
+
+calculateScoreInRow(Board,RowScore,RowNumber, ScoreAcc,ColumnNumber,NumberOfColumns,Player) :-
+
+  calculatePlayerScoreInPiece(Board,RowNumber,ColumnNumber,CurrentScore,Player),
+  NewScore is ScoreAcc + CurrentScore,
+  NextColumn is ColumnNumber + 1,
+  calculateScoreInRow(Board, RowScore, RowNumber, NewScore, NextColumn, NumberOfColumns,Player).
+
+
+calculateGlobalScore(Board,GlobalScore,Player) :-
+
+  length(Board,NumberOfRows),
+  calculateGlobalScore(Board,GlobalScore,0,0,NumberOfRows,Player).
+
+calculateGlobalScore(_,GlobalScore, GlobalScore, NumberOfRows, NumberOfRows,_).
+
+calculateGlobalScore(Board,GlobalScore, ScoreAux, RowNumber, NumberOfRows,Player) :-
+
+  calculateScoreInRow(Board, RowScore, RowNumber,Player),
+  CurrentScore is ScoreAux + RowScore,
+  NextRow is RowNumber + 1,
+  calculateGlobalScore(Board,GlobalScore,CurrentScore,NextRow,NumberOfRows,Player).
 
 
 

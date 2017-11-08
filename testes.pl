@@ -299,17 +299,40 @@ testRetrievePattern(PieceNumber) :-
   buildPiecesP1(Pieces),
   nth0(PieceNumber,Pieces,Piece),
 
-  retrievePiecePattern(Piece, 1,1, Player, Pattern),
-
-  write('Player: '),
-  write(Player),nl,
+  retrievePiecePattern(Piece, 1,1, Pattern),
 
   write('Pattern: '),
   write(Pattern).
 
+testCalculateP1ScoreInPiece(Row,Column) :-
 
-  testPrintMenu :-
-    beginGame.
+  board2(Board),
+  printFullBoard(Board),
+  calculatePlayer1ScoreInPiece(Board,Row,Column,Score),
+  write('Score in chosen Piece: '),nl, write(Score).
+
+
+testCalculateScoreInRow(RowNumber,Player) :-
+
+  board2(Board),
+  printFullBoard(Board),
+
+  calculateScoreInRow(Board,RowScore, RowNumber,Player),
+  write('Row '), write(RowNumber), write(' score: '), write(RowScore),nl.
+
+
+testCalcGS(Player) :-
+
+  board2(Board),
+  printFullBoard(Board),
+
+  calculateGlobalScore(Board, GlobalScore,Player),
+  write('Player Global Score: '), write(GlobalScore),nl.
+
+
+
+testPrintMenu :-
+  beginGame.
 
 
 %reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/testes.pl').
