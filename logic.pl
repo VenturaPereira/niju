@@ -91,8 +91,8 @@ playFirstPiece(InitialBoard, CurrentBoard, Pieces, PieceNumber, NewPieces) :-
 
 playPiece(Board, NewBoard, Row, Column, PieceNumber, Pieces, NewPieces) :-
 
-  validPlay(Board, Row, Column),
-  nl, write('valid play'), nl,
+  %validPlay%BoardRowColumn
+  %nlwritevalidplaynl
   nth0(PieceNumber,Pieces,Piece),
   replaceMatrixElement(Board, BoardWithPiece, Row, Column, Piece),
   growBoard(BoardWithPiece, NewBoard, Row, Column),
