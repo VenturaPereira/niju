@@ -262,6 +262,8 @@ testInterfaceFunctionRotateUser:-
   replaceInPosition(Pieces,NewPieces,4,PieceRotated),
   printPlayerPieces(NewPieces,player1).
 
+testInterfaceOptions :-
+  decisionRotateUser.
 
 testPlayPiece(Row,Column) :-
 
@@ -304,6 +306,10 @@ testRetrievePattern(PieceNumber) :-
 
   write('Pattern: '),
   write(Pattern).
+
+
+  testPrintMenu :-
+    beginGame.
 
 
 %reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/testes.pl').

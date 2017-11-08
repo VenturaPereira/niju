@@ -231,7 +231,6 @@ printPlayerPiecesThirdRow(Pieces) :-
   printPlayerPiecesThirdRow(Rest).
 
 
-
 printIsolatedPiece([R1,R2,R3],Player) :-
 
   write(' ---------'),nl,
@@ -239,3 +238,98 @@ printIsolatedPiece([R1,R2,R3],Player) :-
   printPieceRow2(R2,Player),nl,
   printPieceRow(R3),nl,
   write(' ---------'),nl.
+
+%menuprint
+
+printMenuTitle :-
+  write('                                  __/\\\\\\\\\\_____/\\\\\\__/\\\\\\\\\\\\\\\\\\\\\\______/\\\\\\\\\\\\\\\\\\\\\\__/\\\\\\________/\\\\\\_'),nl,
+  write('                                  _\\/\\\\\\\\\\\\___\\/\\\\\\_\\/////\\\\\\///______\\/////\\\\\\///__\\/\\\\\\_______\\/\\\\\\_       '),nl,
+  write('                                  _\\/\\\\\\/\\\\\\__\\/\\\\\\_____\\/\\\\\\_____________\\/\\\\\\_____\\/\\\\\\_______\\/\\\\\\_      '), nl,
+  write('                                  _\\/\\\\\\//\\\\\\_\\/\\\\\\_____\\/\\\\\\_____________\\/\\\\\\_____\\/\\\\\\_______\\/\\\\\\_     '),nl,
+  write('                                  _\\/\\\\\\\\//\\\\\\\\/\\\\\\_____\\/\\\\\\_____________\\/\\\\\\_____\\/\\\\\\_______\\/\\\\\\_    '),nl,
+  write('                                  _\\/\\\\\\_\\//\\\\\\/\\\\\\_____\\/\\\\\\_____________\\/\\\\\\_____\\/\\\\\\_______\\/\\\\\\_   '),nl,
+  write('                                  _\\/\\\\\\__\\//\\\\\\\\\\\\_____\\/\\\\\\______/\\\\\\___\\/\\\\\\_____\\//\\\\\\______/\\\\\\__  '),nl,
+  write('                                  _\\/\\\\\\___\\//\\\\\\\\\\__/\\\\\\\\\\\\\\\\\\\\\\_\\//\\\\\\\\\\\\\\\\\\_______\\///\\\\\\\\\\\\\\\\\\/___ '),nl,
+  write('                                  _\\///_____\\/////__\\///////////___\\/////////__________\\/////////_____'),nl,nl,
+  write('                      *******************************************************************************************'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                         1- Play                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                         2- Rules                                        *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                         3 - Credits                                     *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                         4 - Exit                                        *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *******************************************************************************************'),nl.
+
+%printrules
+
+printRules :-
+  write('                        *****************************************************************************************'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                   1- 40 Tiles will be distribucted equally among two players.           *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                   2- Each piece has a pattern.                                          *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                   3- You can rotate the piece you wish to play.                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                   4- The game ends when no pieces are left to play.                     *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                   5- The winner will be the player with most patterns completed.        *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                                                                         *'),nl,
+  write('                      *                                 Press 0 to go back.                                     *'),nl,
+  write('                      *******************************************************************************************'),nl.
+
+
+%printCredits
+
+printCredits :-
+  write('                        *****************************************************************************************'),nl,
+  write('                        *                                                                                       *'),nl,
+  write('                        *                                    Game developed by:                                 *'),nl,
+  write('                        *                                                                                       *'),nl,
+  write('                        *                                                                                       *'),nl,
+  write('                        *                                                                                       *'),nl,
+  write('                        *                                  - Joao Pedro Furriel;                                *'),nl,
+  write('                        *                                                                                       *'),nl,
+  write('                        *                                                                                       *'),nl,
+  write('                        *                                                                                       *'),nl,
+  write('                        *                                   - Ventura Pereira.                                  *'),nl,
+  write('                        *                                                                                       *'),nl,
+  write('                        *                                                                                       *'),nl,
+  write('                        *                                                                                       *'),nl,
+  write('                        *                                                                                       *'),nl,
+  write('                        *                                                                                       *'),nl,
+  write('                        *                                                                                       *'),nl,
+  write('                        *                                                                                       *'),nl,
+  write('                        *                                                                                       *'), nl,
+  write('                        *                                                                                       *'),nl,
+  write('                        *                                                                                       *'), nl,
+  write('                        *                                  Press 0 to go back.                                  *'),nl,
+  write('                        *****************************************************************************************'),nl.

@@ -91,7 +91,7 @@ playFirstPiece(InitialBoard, CurrentBoard, Pieces, PieceNumber, NewPieces) :-
 
 playPiece(Board, NewBoard, Row, Column, PieceNumber, Pieces, NewPieces) :-
 
-  validPlayEmptySpace(Board, Row, Column),
+  validPlay(Board, Row, Column),
   nl, write('valid play'), nl,
   nth0(PieceNumber,Pieces,Piece),
   replaceMatrixElement(Board, BoardWithPiece, Row, Column, Piece),
@@ -100,10 +100,10 @@ playPiece(Board, NewBoard, Row, Column, PieceNumber, Pieces, NewPieces) :-
 
 playPiece(Board,Board, Row, Column, _, Pieces, Pieces) :-
 
-  \+ validPlayEmptySpace(Board,Row,Column),
+  \+ validPlay(Board,Row,Column),
   nl, write('invalid play'), nl.
 
-validPlayEmptySpace(Board, Row, Column) :-
+validPlay(Board, Row, Column) :-
 
   getMatrixElement(Board, Element, Row, Column),
   emptySpace(EmptySpace),
