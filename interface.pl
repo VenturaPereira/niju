@@ -45,21 +45,13 @@ playOptionCycle(Player1Pieces,Player2Pieces,InitialBoard):-
  length(Player1Pieces,Size),
   Size < 2,
   Size > 0,
-  printPlayerPieces(Player1Pieces, player1),nl,
-  write('Choose piece to play, rotation direction and times to rotate'),
+  printPlayerPieces(Player1Pieces, player1),nl,write('Choose piece to play, rotation direction and times to rotate'),
   read(ChosenPieceNumber),
   read(Direction),
   read(Times),
   rotatePlayerPiece(Player1Pieces, ChosenPieceNumber, Direction, Times, Player1PiecesAfterRotation),
-  write('Choose row and collum to place the piece:'),
-  read(Row),
-  read(Coll),
-  (
-
-  \+ validPlay(InitialBoard,Row,Coll) -> playOptionCycle(Player1PiecesAfterRotation,Player2Pieces,InitialBoard);
-  validPlay(InitialBoard,Row,Coll) -> write('Continue'),nl
-  ),
-  playPiece(InitialBoard,NextBoard,Row,Coll,ChosenPieceNumber,Player1PiecesAfterRotation,PiecesPlayer1AFP),
+  loop(InitialBoard,RowSave,ColSave),
+  playPiece(InitialBoard,NextBoard,RowSave,ColSave,ChosenPieceNumber,Player1PiecesAfterRotation,PiecesPlayer1AFP),
   printFullBoard(NextBoard),
   playOptionCycleSecond(PiecesPlayer1AFP,Player2Pieces,NextBoard).
 
@@ -78,18 +70,21 @@ playOptionCycleSecond(Player1Pieces,Player2Pieces,InitialBoard) :-
   read(Direction),
   read(Times),
   rotatePlayerPiece(Player2Pieces, ChosenPieceNumber, Direction, Times, Player2PiecesAfterRotation),
-  write('Choose row and collum to place the piece:'),
-  read(Row),
-  read(Coll),
-  (
-
-  \+ validPlay(InitialBoard,Row,Coll) -> playOptionCycleSecond(Player1Pieces,Player2PiecesAfterRotation,InitialBoard);
-  validPlay(InitialBoard,Row,Coll) -> write('Continue'),nl
-  ),
-  playPiece(InitialBoard,NextBoard,Row,Coll,ChosenPieceNumber,Player2PiecesAfterRotation,PiecesPlayer2AFP),
+  loop(InitialBoard,RowSave,ColSave),
+  playPiece(InitialBoard,NextBoard,RowSave,ColSave,ChosenPieceNumber,Player2PiecesAfterRotation,PiecesPlayer2AFP),
   printFullBoard(NextBoard),
   playOptionCycle(Player1Pieces,PiecesPlayer2AFP,NextBoard).
 
+
+loop(InitialBoard,RowSave, ColSave) :-
+write('Choose row and collum to place the piece:'),
+read(Row),
+read(Coll),
+validPlay(InitialBoard,Row,Coll),
+ RowSave is Row,
+ ColSave is Coll.
+
+ loop(InitialBoard,RowSave, ColSave):- loop(InitialBoard,RowSave, ColSave).
 
 
 
