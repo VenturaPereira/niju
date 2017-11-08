@@ -257,6 +257,10 @@ testInterfaceFunctionRotateUser:-
   replaceInPosition(Pieces,NewPieces,4,PieceRotated),
   printPlayerPieces(NewPieces,player1).
 
+testInterfaceOptions :-
+  decisionRotateUser.
 
+  testPrintMenu :-
+    beginGame.
 
 %reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/testes.pl').
