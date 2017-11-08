@@ -19,8 +19,8 @@ beginGame :-
 
 
 playOption:-
-preplay(Player1Pieces,Player2Pieces,InitialBoard),nl,
-playOptionCycle(Player1Pieces,Player2Pieces,InitialBoard).
+  preplay(Player1Pieces,Player2Pieces,InitialBoard),nl,
+  playOptionCycle(Player1Pieces,Player2Pieces,InitialBoard).
 
 
 
@@ -57,14 +57,14 @@ playOptionCycle(Player1Pieces,Player2Pieces,InitialBoard):-
   (
 
   \+ validPlay(InitialBoard,Row,Coll) -> playOptionCycle(Player1PiecesAfterRotation,Player2Pieces,InitialBoard);
-  validPlay(InitialBoard,Row,coll) -> write('Continue')
+  validPlay(InitialBoard,Row,Coll) -> write('Continue'),nl
   ),
   playPiece(InitialBoard,NextBoard,Row,Coll,ChosenPieceNumber,Player1PiecesAfterRotation,PiecesPlayer1AFP),
   printFullBoard(NextBoard),
   playOptionCycleSecond(PiecesPlayer1AFP,Player2Pieces,NextBoard).
 
 playOptionCycle([],_,_) :-
-write('Fim de jogo').
+  write('Fim de jogo').
 
 
 playOptionCycleSecond(_,[],_).
@@ -84,7 +84,7 @@ playOptionCycleSecond(Player1Pieces,Player2Pieces,InitialBoard) :-
   (
 
   \+ validPlay(InitialBoard,Row,Coll) -> playOptionCycleSecond(Player1Pieces,Player2PiecesAfterRotation,InitialBoard);
-  validPlay(InitialBoard,Row,Coll) -> write('Continue')
+  validPlay(InitialBoard,Row,Coll) -> write('Continue'),nl
   ),
   playPiece(InitialBoard,NextBoard,Row,Coll,ChosenPieceNumber,Player2PiecesAfterRotation,PiecesPlayer2AFP),
   printFullBoard(NextBoard),
