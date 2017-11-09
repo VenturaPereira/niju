@@ -141,4 +141,30 @@ replaceMatrixElement(Matrix, NewMatrix, Row, Column, NewElement) :-
   replaceInPosition(Matrix, NewMatrix, Row, NewRow).
 
 
+readChar(Char,Question,_) :-
+
+  write(Question),write(' '),
+  read(Char),
+  atom(Char),
+  !.
+
+readChar(Char,Question,Error) :-
+
+  write(Error),write(' '),
+  readChar(Char,Question,Error).
+
+readInt(Int,Question,_) :-
+
+  write(Question),write(' '),
+  read(Int),
+  integer(Int),
+  !.
+
+
+readInt(Int,Question,Error) :-
+
+  write(Error), write(' '),
+  readInt(Int,Question,Error).
+
+
 %

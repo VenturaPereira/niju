@@ -2,7 +2,7 @@
 
 :- include('utils.pl').
 
-numberOfPieces(2).
+numberOfPieces(1).
 
 piece(1,[[1,1,1],[0,x,1],[0,0,0]]).
 piece(2,[[1,1,1],[0,x,0],[0,0,1]]).
@@ -36,6 +36,8 @@ rotatePiece(Piece,PieceRotated,_,2) :-
 
 rotatePiece(Piece,Piece,_,N) :-
   N > 2.
+
+rotatePiece(Piece,Piece,_,0).
 
 pieceRotate(Piece,Piece,0).
 pieceRotate(Piece, PieceRotated, N) :-

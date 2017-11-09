@@ -71,7 +71,6 @@ growBoard(CurrentBoard, GrownBoard, Row, Column) :-
   updateBoardRows(CurrentBoard, GrownBoardRows, Row),
   updateBoardColumns(GrownBoardRows, GrownBoard, Column).
 
-
 getPieceFromBoard(Board, Row, Column, Piece) :-
 
   getMatrixElement(Board, Piece, Row, Column).
@@ -81,18 +80,14 @@ getPieceFromBoard(Board, Row, Column, EmptySpace) :-
   \+ getMatrixElement(Board, EmptySpace, Row, Column),
   emptySpace(EmptySpace).
 
-
 playFirstPiece(InitialBoard, CurrentBoard, Pieces, PieceNumber, NewPieces) :-
 
   nth0(PieceNumber,Pieces,Piece),
   replaceMatrixElement(InitialBoard, CurrentBoard, 1, 1, Piece),
   remove(Piece,Pieces,NewPieces).
 
-
 playPiece(Board, NewBoard, Row, Column, PieceNumber, Pieces, NewPieces) :-
 
-  %validPlay%BoardRowColumn
-  %nlwritevalidplaynl
   nth0(PieceNumber,Pieces,Piece),
   replaceMatrixElement(Board, BoardWithPiece, Row, Column, Piece),
   growBoard(BoardWithPiece, NewBoard, Row, Column),
@@ -141,7 +136,6 @@ retrievePiecePattern(Piece, Row, Column, Pattern) :-
   append(R1Pattern, R2Pattern, RAux),
   append(RAux, R3Pattern, Pattern).
 
-
 parsePieceRow([],List, List,_,_).
 
 parsePieceRow(Row, List, ListAux, RowNumber, ColumNumber) :-
@@ -157,12 +151,6 @@ parsePieceRow(Row,List, ListAux, RowNumber,ColumNumber) :-
   [0| Rest] = Row,
   NewColumnNumber is ColumNumber + 1,
   parsePieceRow(Rest,List, ListAux,RowNumber, NewColumnNumber).
-
-
-
-
-
-
 
 calculatePlayerScoreInPiece(Board,Row,Column,Score,Player) :-
 
@@ -194,7 +182,6 @@ playerGoodPiece(Board, Row, Column,Player) :-
   playerFromPiece(Piece3,Player),
   playerFromPiece(Piece4,Player).
 
-
 calculateScoreInRow(Board,RowScore,RowNumber,Player) :-
 
   [FirstRow|_] = Board,
@@ -209,7 +196,6 @@ calculateScoreInRow(Board,RowScore,RowNumber, ScoreAcc,ColumnNumber,NumberOfColu
   NewScore is ScoreAcc + CurrentScore,
   NextColumn is ColumnNumber + 1,
   calculateScoreInRow(Board, RowScore, RowNumber, NewScore, NextColumn, NumberOfColumns,Player).
-
 
 calculateGlobalScore(Board,GlobalScore,Player) :-
 

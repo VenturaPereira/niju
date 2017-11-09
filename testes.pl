@@ -335,4 +335,38 @@ testPrintMenu :-
   beginGame.
 
 
+testValidatePiecePosition :-
+
+  board2(Board),
+  printFullBoard(Board),
+  askPiecePosition(Board,Row,Column),
+  write('good position: '), write(Row), write(' '), write(Column).
+
+testAskPiece :-
+
+  buildPiecesP1(Pieces),
+  printPlayerPieces(Pieces,player1),
+  askPieceNumber(Pieces,PieceNumber),
+  write('Good Piece Number: '), write(PieceNumber).
+
+testPieceRotationDir :-
+
+  askPieceRotationDirection(Direction),
+  write('good direction: '), write(Direction).
+
+testPieceRotationTimes :-
+
+  askPieceRotationTimes(Times),
+  write('good times: '), write(Times).
+
+
+testAskPieceRot :-
+
+  buildPiecesP1(Pieces),
+  printPlayerPieces(Pieces,player1),
+  askPieceNumber(Pieces,PieceNumber),
+  askPieceRotation(Pieces,PieceNumber,NewPieces),
+  printPlayerPieces(NewPieces,player1).
+
+
 %reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/testes.pl').
