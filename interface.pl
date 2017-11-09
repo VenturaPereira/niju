@@ -1,5 +1,4 @@
-:- include('play.pl').
-
+:- include('print.pl').
 
 beginGame :-
   printMenuTitle, nl,
@@ -13,13 +12,11 @@ beginGame :-
 
   ).
 
-
 playOption:-
 
   preplay(Player1Pieces,Player2Pieces,InitialBoard),
   startPlay(Player1Pieces, InitialBoard, Player1PiecesAFM, BoardAFM, CurrentPlayer),
   playCycle(Player1PiecesAFM, Player2Pieces,BoardAFM, CurrentPlayer).
-
 
 playCycle([],[],FinalBoard,_) :-
 
@@ -32,12 +29,10 @@ playCycle([],[],FinalBoard,_) :-
   write('Player 1 Points: '), write(GlobalScorePlayer1),nl,
   write('Player 2 Points: '), write(GlobalScorePlayer2).
 
-
 playCycle(PiecesPlayer1, PiecesPlayer2, CurrentBoard, CurrentPlayer) :-
 
   play(PiecesPlayer1, PiecesPlayer2, CurrentBoard, NewPiecesPlayer1, NewPiecesPlayer2, NextBoard, CurrentPlayer, NextPlayer),
   playCycle(NewPiecesPlayer1,NewPiecesPlayer2, NextBoard, NextPlayer).
-
 
 preplay(PiecesPlayer1, PiecesPlayer2, InitialBoard) :-
 
@@ -54,7 +49,6 @@ startPlay(PiecesPlayer1, InitialBoard, NewPiecesPlayer1, NextBoard, player2) :-
   askPieceRotation(PiecesPlayer1,FirstPieceNumber,Player1PiecesAR),
   playFirstPiece(InitialBoard, NextBoard, Player1PiecesAR, FirstPieceNumber, NewPiecesPlayer1).
 
-
 play(PiecesPlayer1, PiecesPlayer2, Board, NewPiecesPlayer1, PiecesPlayer2, NextBoard, player1, player2) :-
 
   printFullBoard(Board),
@@ -63,7 +57,6 @@ play(PiecesPlayer1, PiecesPlayer2, Board, NewPiecesPlayer1, PiecesPlayer2, NextB
   askPieceRotation(PiecesPlayer1,PieceNumber,Player1PiecesAR),
   askPiecePosition(Board,Row,Column),
   playPiece(Board, NextBoard, Row, Column, PieceNumber, Player1PiecesAR, NewPiecesPlayer1).
-
 
 play(PiecesPlayer1, PiecesPlayer2, Board, PiecesPlayer1, NewPiecesPlayer2, NextBoard, player2, player1) :-
 
@@ -75,14 +68,12 @@ play(PiecesPlayer1, PiecesPlayer2, Board, PiecesPlayer1, NewPiecesPlayer2, NextB
   askPiecePosition(Board,Row,Column),
   playPiece(Board, NextBoard, Row, Column, PieceNumber, Player2PiecesAR, NewPiecesPlayer2).
 
-
 askPieceRotation(Pieces,PieceNumber,NewPieces) :-
 
   askPieceRotationDirection(Direction),
   askPieceRotationTimes(Times),
   rotatePlayerPiece(Pieces,PieceNumber,Direction,Times,NewPieces),
   !.
-
 
 askPieceRotationTimes(Times) :-
 
