@@ -31,10 +31,7 @@ playOptionCycle(Player1Pieces,Player2Pieces,InitialBoard):-
    write(Size),
   Size =:= 2,
   printPlayerPieces(Player1Pieces, player1),nl,
-  write('Choose piece to play, rotation direction and times to rotate'),
-  read(ChosenPieceNumber),
-  read(Direction),
-  read(Times),
+  loopValoresRotacao(ChosenPieceNumber,Direction,Times),
   rotatePlayerPiece(Player1Pieces, ChosenPieceNumber, Direction, Times, Player1PiecesAfterRotation),
   startPlay(Player1PiecesAfterRotation, InitialBoard, ChosenPieceNumber, PiecesPlayer1AFP, NextBoard),
   printFullBoard(NextBoard),
@@ -45,10 +42,8 @@ playOptionCycle(Player1Pieces,Player2Pieces,InitialBoard):-
  length(Player1Pieces,Size),
   Size < 2,
   Size > 0,
-  printPlayerPieces(Player1Pieces, player1),nl,write('Choose piece to play, rotation direction and times to rotate'),
-  read(ChosenPieceNumber),
-  read(Direction),
-  read(Times),
+  printPlayerPieces(Player1Pieces, player1),nl,
+  loopValoresRotacao(ChosenPieceNumber,Direction,Times),
   rotatePlayerPiece(Player1Pieces, ChosenPieceNumber, Direction, Times, Player1PiecesAfterRotation),
   loop(InitialBoard,RowSave,ColSave),
   playPiece(InitialBoard,NextBoard,RowSave,ColSave,ChosenPieceNumber,Player1PiecesAfterRotation,PiecesPlayer1AFP),
@@ -65,15 +60,30 @@ playOptionCycleSecond(Player1Pieces,Player2Pieces,InitialBoard) :-
   length(Player2Pieces, Size),
   Size > 0,
   printPlayerPieces(Player2Pieces, player2),nl,
-  write('Choose piece to play, rotation direction and times to rotate'),
-  read(ChosenPieceNumber),
-  read(Direction),
-  read(Times),
+  loopValoresRotacao(ChosenPieceNumber,Direction,Times),
   rotatePlayerPiece(Player2Pieces, ChosenPieceNumber, Direction, Times, Player2PiecesAfterRotation),
   loop(InitialBoard,RowSave,ColSave),
   playPiece(InitialBoard,NextBoard,RowSave,ColSave,ChosenPieceNumber,Player2PiecesAfterRotation,PiecesPlayer2AFP),
   printFullBoard(NextBoard),
   playOptionCycle(Player1Pieces,PiecesPlayer2AFP,NextBoard).
+
+
+loopValoresRotacao(ChosenPieceNumber,Direction,Times) :-
+  write('Choose piece to play, rotation direction and times to rotate'),
+  read(X),
+  read(Y),
+  read(Z),
+  integer(X),
+  atom(Y),
+  integer(Z),
+  ChosenPieceNumber is X,
+  Direction = Y,
+  Times is Z.
+
+loopValoresRotacao(ChosenPieceNumber,Direction,Times) :- write('Invalid Input!'),
+nl,
+loopValoresRotacao(ChosenPieceNumber,Direction,Times).
+
 
 
 loop(InitialBoard,RowSave, ColSave) :-
