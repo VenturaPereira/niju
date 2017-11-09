@@ -1,34 +1,26 @@
 :- include('play.pl').
 
 
-
 beginGame :-
   printMenuTitle, nl,
   write('Choose your option with a dot!'),
   read(Option),
   (
-
-  Option =:= 1 -> playOption;
-  Option =:= 2 -> printRulesMenu;
-  Option =:= 3 -> printCreditsMenu;
-  Option =:= 0 -> beginGame
+    Option =:= 1 -> playOption;
+    Option =:= 2 -> printRulesMenu;
+    Option =:= 3 -> printCreditsMenu;
+    Option =:= 0 -> beginGame
 
   ).
-
-
 
 
 playOption:-
   preplay(Player1Pieces,Player2Pieces,InitialBoard),nl,
   playOptionCycle(Player1Pieces,Player2Pieces,InitialBoard).
 
-
-
-
-
 playOptionCycle(Player1Pieces,Player2Pieces,InitialBoard):-
   length(Player1Pieces,Size),
-   write(Size),
+  write(Size),
   Size =:= 2,
   printPlayerPieces(Player1Pieces, player1),nl,
   write('Choose piece to play, rotation direction and times to rotate'),
@@ -42,7 +34,7 @@ playOptionCycle(Player1Pieces,Player2Pieces,InitialBoard):-
 
 
 playOptionCycle(Player1Pieces,Player2Pieces,InitialBoard):-
- length(Player1Pieces,Size),
+  length(Player1Pieces,Size),
   Size < 2,
   Size > 0,
   printPlayerPieces(Player1Pieces, player1),nl,write('Choose piece to play, rotation direction and times to rotate'),
@@ -77,43 +69,34 @@ playOptionCycleSecond(Player1Pieces,Player2Pieces,InitialBoard) :-
 
 
 loop(InitialBoard,RowSave, ColSave) :-
-write('Choose row and collum to place the piece:'),
-read(Row),
-read(Coll),
-validPlay(InitialBoard,Row,Coll),
- RowSave is Row,
- ColSave is Coll.
-
- loop(InitialBoard,RowSave, ColSave):- loop(InitialBoard,RowSave, ColSave).
-
-
-
+  write('Choose row and collum to place the piece:'),
+  read(Row),
+  read(Coll),
+  validPlay(InitialBoard,Row,Coll),
+  RowSave is Row,
+  ColSave is Coll.
+  loop(InitialBoard,RowSave, ColSave):- loop(InitialBoard,RowSave, ColSave).
 
 
 printRulesMenu :-
   printRules,
   read(Option),
   (
-  Option =:= 0 -> beginGame
+    Option =:= 0 -> beginGame
   ).
 
   printCreditsMenu :-
   printCredits,
   read(Option),
   (
-  Option =:= 0 -> beginGame
+    Option =:= 0 -> beginGame
   ).
-
-
-
-
 
 rotatePlayerPiece(Pieces,PieceNumber, Direction, Times, NewPieces) :-
 
   nth0(PieceNumber,Pieces,Piece),
   rotatePiece(Piece,PieceRotated,Direction,Times),
   replaceInPosition(Pieces,NewPieces,PieceNumber,PieceRotated).
-
 
 
 %
