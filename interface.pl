@@ -77,7 +77,9 @@ loopValoresRotacao(ChosenPieceNumber,Direction,Times) :-
   atom(Y),
   integer(Z),
   ChosenPieceNumber is X,
+
   Direction = Y,
+
   Times is Z.
 
 loopValoresRotacao(ChosenPieceNumber,Direction,Times) :- write('Invalid Input!'),
