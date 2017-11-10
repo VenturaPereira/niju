@@ -2,15 +2,16 @@
 
 beginGame :-
   printMenuTitle, nl,
-  write('Choose your option with a dot!'),
-  read(Option),
+  readIntBetween(Option,0,3,'Choose your option with a dot!','Invalid Number'),
+
   (
     Option =:= 1 -> playOption;
     Option =:= 2 -> printRulesMenu;
     Option =:= 3 -> printCreditsMenu;
-    Option =\= 0 -> beginGame
+    Option =:= 0 -> write('Bye')
 
   ).
+
 
 playOption:-
 
@@ -18,19 +19,17 @@ playOption:-
   startPlay(Player1Pieces, InitialBoard, Player1PiecesAFM, BoardAFM, CurrentPlayer),
   playCycle(Player1PiecesAFM, Player2Pieces,BoardAFM, CurrentPlayer).
 
-  playCycle([],[],FinalBoard,_) :-
+chooseFinalMessage(GlobalScorePlayer1,GlobalScorePlayer2) :-
 
-    printFullBoard(FinalBoard),
+  (
+    GlobalScorePlayer1 > GlobalScorePlayer2 -> printFinalScore(GlobalScorePlayer1,GlobalScorePlayer2, player1),nl;
+    GlobalScorePlayer1 < GlobalScorePlayer2 -> printFinalScore(GlobalScorePlayer1,GlobalScorePlayer2, player2),nl;
+    GlobalScorePlayer1 =:= GlobalScorePlayer2 -> printFinalScore(GlobalScorePlayer1,GlobalScorePlayer2, empty),nl
+  ),
 
-    calculateGlobalScore(FinalBoard,GlobalScorePlayer1,player1),
-    calculateGlobalScore(FinalBoard,GlobalScorePlayer2,player2),
+  readIntBetween(_,0,0,'Go back?','Invalid Number'),
+  beginGame.
 
-    write('Fim do Jogo'),nl,
-    GlobalScorePlayer1 =:= GlobalScorePlayer2,
-    printFinalScore(GlobalScorePlayer1,GlobalScorePlayer2, empty),nl,
-    read(Option),
-    Option =:= 0,
-    beginGame.
 
 playCycle([],[],FinalBoard,_) :-
 
@@ -40,27 +39,7 @@ playCycle([],[],FinalBoard,_) :-
   calculateGlobalScore(FinalBoard,GlobalScorePlayer2,player2),
 
   write('Fim do Jogo'),nl,
-  GlobalScorePlayer1 > GlobalScorePlayer2,
-  printFinalScore(GlobalScorePlayer1,GlobalScorePlayer2, player1),nl,
-  read(Option),
-  Option =:= 0,
-  beginGame.
-
-  playCycle([],[],FinalBoard,_) :-
-
-    printFullBoard(FinalBoard),
-
-    calculateGlobalScore(FinalBoard,GlobalScorePlayer1,player1),
-    calculateGlobalScore(FinalBoard,GlobalScorePlayer2,player2),
-
-    write('Fim do Jogo'),nl,
-    GlobalScorePlayer1 < GlobalScorePlayer2,
-    printFinalScore(GlobalScorePlayer1,GlobalScorePlayer2, player2),nl,
-    read(Option),
-    Option =:= 0,
-    beginGame.
-
-
+  chooseFinalMessage(GlobalScorePlayer1,GlobalScorePlayer2).
 
 playCycle(PiecesPlayer1, PiecesPlayer2, CurrentBoard, CurrentPlayer) :-
 

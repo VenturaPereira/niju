@@ -1,8 +1,6 @@
-%reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/pieces.pl').
-
 :- include('utils.pl').
 
-numberOfPieces(1).
+numberOfPieces(5).
 
 piece(1,[[1,1,1],[0,x,1],[0,0,0]]).
 piece(2,[[1,1,1],[0,x,0],[0,0,1]]).

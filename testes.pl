@@ -368,5 +368,10 @@ testAskPieceRot :-
   askPieceRotation(Pieces,PieceNumber,NewPieces),
   printPlayerPieces(NewPieces,player1).
 
+testGetIntBetween(X,Y) :-
+
+  readIntBetween(Int,X,Y,'Integer','Error'),
+  write('Good'), write(Int).
+
 
 %reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/testes.pl').

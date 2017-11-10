@@ -167,4 +167,17 @@ readInt(Int,Question,Error) :-
   readInt(Int,Question,Error).
 
 
+readIntBetween(Int,Floor,Ceiling,Question,Error) :-
+
+  readInt(Int,Question,Error),
+  Int =< Ceiling,
+  Int >= Floor,
+  !.
+
+readIntBetween(Int,Floor,Ceiling,Question,Error) :-
+
+  write('Wrong Number! '),
+  readIntBetween(Int,Floor,Ceiling,Question,Error).
+
+
 %
