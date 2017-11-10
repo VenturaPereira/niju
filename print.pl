@@ -324,3 +324,38 @@ printCredits :-
   write('                        *                                                                                      *'), nl,
   write('                        *                                 Press 0 to go back !                                 *'),nl,
   write('                        ****************************************************************************************'),nl.
+
+%printFinalScore
+printWinnerPlayer(player1) :-
+  write('WINNER: Player 1').
+
+printWinnerPlayer(player2) :-
+  write('WINNER: Player 2').
+
+printWinnerPlayer(empty)   :-
+  write('IT WAS A TIE').
+
+printFinalScore(WinnerScore,LoserScore, WinnerPlayer) :-
+write('                        ****************************************************************************************'),nl,
+write('                        *                                                                                      *'),nl,
+write('                        *                                  FINAL SCORE                                         *'),nl,
+write('                        *                                                                                      *'),nl,
+write('                        *                                                                                      *'),nl,
+write('                        *                                                                                      *'),nl,
+write('                        *                                  '),printWinnerPlayer(WinnerPlayer), write('                                        *'),nl,
+write('                        *                                                                                      *'),nl,
+write('                        *                                                                                      *'),nl,
+write('                        *                                  Player 1:  '),write(WinnerScore), write('                                        *'),nl,
+write('                        *                                                                                      *'),nl,
+write('                        *                                  Player 2:  '),write(LoserScore), write('                                        *'),nl,
+write('                        *                                                                                      *'),nl,
+write('                        *                                                                                      *'),nl,
+write('                        *                                                                                      *'),nl,
+write('                        *                                                                                      *'),nl,
+write('                        *                                                                                      *'),nl,
+write('                        *                                                                                      *'),nl,
+write('                        *                                                                                      *'),nl,
+write('                        *                                                                                      *'),nl,
+write('                        *                                                                                      *'), nl,
+write('                        *                                 Press 0 to go to the Menu !                          *'),nl,
+write('                        ****************************************************************************************'),nl.

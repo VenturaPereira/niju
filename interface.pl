@@ -18,6 +18,20 @@ playOption:-
   startPlay(Player1Pieces, InitialBoard, Player1PiecesAFM, BoardAFM, CurrentPlayer),
   playCycle(Player1PiecesAFM, Player2Pieces,BoardAFM, CurrentPlayer).
 
+  playCycle([],[],FinalBoard,_) :-
+
+    printFullBoard(FinalBoard),
+
+    calculateGlobalScore(FinalBoard,GlobalScorePlayer1,player1),
+    calculateGlobalScore(FinalBoard,GlobalScorePlayer2,player2),
+
+    write('Fim do Jogo'),nl,
+    GlobalScorePlayer1 =:= GlobalScorePlayer2,
+    printFinalScore(GlobalScorePlayer1,GlobalScorePlayer2, empty),nl,
+    read(Option),
+    Option =:= 0,
+    beginGame.
+
 playCycle([],[],FinalBoard,_) :-
 
   printFullBoard(FinalBoard),
@@ -26,8 +40,27 @@ playCycle([],[],FinalBoard,_) :-
   calculateGlobalScore(FinalBoard,GlobalScorePlayer2,player2),
 
   write('Fim do Jogo'),nl,
-  write('Player 1 Points: '), write(GlobalScorePlayer1),nl,
-  write('Player 2 Points: '), write(GlobalScorePlayer2).
+  GlobalScorePlayer1 > GlobalScorePlayer2,
+  printFinalScore(GlobalScorePlayer1,GlobalScorePlayer2, player1),nl,
+  read(Option),
+  Option =:= 0,
+  beginGame.
+
+  playCycle([],[],FinalBoard,_) :-
+
+    printFullBoard(FinalBoard),
+
+    calculateGlobalScore(FinalBoard,GlobalScorePlayer1,player1),
+    calculateGlobalScore(FinalBoard,GlobalScorePlayer2,player2),
+
+    write('Fim do Jogo'),nl,
+    GlobalScorePlayer1 < GlobalScorePlayer2,
+    printFinalScore(GlobalScorePlayer1,GlobalScorePlayer2, player2),nl,
+    read(Option),
+    Option =:= 0,
+    beginGame.
+
+
 
 playCycle(PiecesPlayer1, PiecesPlayer2, CurrentBoard, CurrentPlayer) :-
 
@@ -44,7 +77,6 @@ startPlay(PiecesPlayer1, InitialBoard, NewPiecesPlayer1, NextBoard, player2) :-
 
   printFullBoard(InitialBoard),
   printPlayerPieces(PiecesPlayer1,player1),
-
   askPieceNumber(PiecesPlayer1,FirstPieceNumber),
   askPieceRotation(PiecesPlayer1,FirstPieceNumber,Player1PiecesAR),
   playFirstPiece(InitialBoard, NextBoard, Player1PiecesAR, FirstPieceNumber, NewPiecesPlayer1).
