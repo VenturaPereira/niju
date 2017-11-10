@@ -204,6 +204,8 @@ board2(
 ).
 
 
+
+
 testPrintPlayerPieces :-
 
   buildPiecesP1(PiecesP1),
@@ -372,6 +374,184 @@ testGetIntBetween(X,Y) :-
 
   readIntBetween(Int,X,Y,'Integer','Error'),
   write('Good'), write(Int).
+
+testGetPatternList(Row,Column) :-
+
+  board1(Board),
+  printFullBoard(Board),
+
+  getPieceFromBoard(Board,Row,Column,Piece),
+  retrievePiecePattern(Piece,Row,Column,Pattern),
+
+  getPatternPosList(Board,Pattern,PatternPosList),
+
+  write(PatternPosList).
+
+
+testDangerPiece(RowP,ColumnP) :-
+
+  emptySpace(EmptySpace),
+  buildPiecesP1(Pieces),
+  nth0(0,Pieces,Piece),
+  nth0(1,Pieces,Piece1),
+  nth0(2,Pieces,Piece2),
+  nth0(3,Pieces,Piece3),
+
+  buildPiecesP2(PiecesP2),
+  nth0(0,PiecesP2,PieceP2),
+
+	MidBoard = [
+
+    [Piece1,Piece2,Piece3],
+    [EmptySpace,Piece,EmptySpace],
+    [EmptySpace,PieceP2,EmptySpace]
+
+	],
+
+  printFullBoard(MidBoard),
+
+  getPieceFromBoard(MidBoard,RowP,ColumnP,PieceToTest),
+
+  checkDangerPiece(MidBoard,PieceToTest,RowP,ColumnP,player1,Row,Column),
+
+  write('Row and Column To Play because of danger: '), write(Row), write(' '), write(Column),nl.
+
+
+testDangerRow :-
+
+  emptySpace(EmptySpace),
+  buildPiecesP1(Pieces),
+  nth0(0,Pieces,Piece),
+  nth0(1,Pieces,Piece1),
+  nth0(2,Pieces,Piece2),
+  nth0(3,Pieces,Piece3),
+
+  buildPiecesP2(PiecesP2),
+  nth0(0,PiecesP2,PieceP2),
+
+  MidBoard = [
+
+    [Piece1,Piece2,Piece3],
+    [EmptySpace,Piece,EmptySpace],
+    [EmptySpace,PieceP2,EmptySpace]
+
+  ],
+
+  printFullBoard(MidBoard),
+  nth0(1,MidBoard,Row2),
+
+  checkDefenseRow(Row2,MidBoard,1,player1,DangerList),
+  write(DangerList).
+
+testDanger :-
+
+  emptySpace(EmptySpace),
+  buildPiecesP1(Pieces),
+  nth0(0,Pieces,Piece),
+  nth0(1,Pieces,Piece1),
+  nth0(2,Pieces,Piece2),
+  nth0(3,Pieces,Piece3),
+
+  buildPiecesP2(PiecesP2),
+  nth0(0,PiecesP2,PieceP2),
+
+  MidBoard = [
+
+    [Piece1,Piece2,Piece3],
+    [EmptySpace,Piece,EmptySpace],
+    [EmptySpace,PieceP2,EmptySpace]
+
+  ],
+
+  printFullBoard(MidBoard),
+
+  checkDefense(MidBoard,MidBoard,player1,DangerList),
+  write(DangerList).
+
+
+testGPES(Row,Column) :-
+
+  emptySpace(EmptySpace),
+  buildPiecesP1(Pieces),
+  nth0(0,Pieces,Piece),
+  nth0(1,Pieces,Piece1),
+  nth0(2,Pieces,Piece2),
+  nth0(3,Pieces,Piece3),
+
+  buildPiecesP2(PiecesP2),
+  nth0(0,PiecesP2,PieceP2),
+
+  MidBoard = [
+
+    [Piece1,Piece2,Piece3],
+    [EmptySpace,Piece,EmptySpace],
+    [EmptySpace,PieceP2,EmptySpace]
+
+  ],
+
+  printFullBoard(MidBoard),
+  getPieceFromBoard(MidBoard,Row,Column,PieceFromBoard),
+
+  getGoodPositionsPiece(MidBoard,PieceFromBoard,Row,Column,EmptySpaces),
+
+  write('Empty Spaces: '), write(EmptySpaces).
+
+
+testGRES(Row,Player) :-
+
+  emptySpace(EmptySpace),
+  buildPiecesP1(Pieces),
+  nth0(0,Pieces,Piece),
+  nth0(1,Pieces,Piece1),
+  nth0(2,Pieces,Piece2),
+  nth0(3,Pieces,Piece3),
+
+  buildPiecesP2(PiecesP2),
+  nth0(0,PiecesP2,PieceP2),
+
+  MidBoard = [
+
+    [Piece1,Piece2,Piece3],
+    [EmptySpace,Piece,EmptySpace],
+    [EmptySpace,PieceP2,EmptySpace]
+
+  ],
+
+  printFullBoard(MidBoard),
+
+  nth0(Row,MidBoard,RowToTest),
+  getGoodPositionsBoardRowPieces(MidBoard,Player,RowToTest,Row,GoodPositionsList),
+
+
+  write('Empty Spaces: '), write(GoodPositionsList).
+
+
+testGES(Player) :-
+
+  emptySpace(EmptySpace),
+  buildPiecesP1(Pieces),
+  nth0(0,Pieces,Piece),
+  nth0(1,Pieces,Piece1),
+  nth0(2,Pieces,Piece2),
+  nth0(3,Pieces,Piece3),
+
+  buildPiecesP2(PiecesP2),
+  nth0(0,PiecesP2,PieceP2),
+
+  MidBoard = [
+
+    [Piece1,Piece2,Piece3],
+    [EmptySpace,Piece,EmptySpace],
+    [EmptySpace,PieceP2,EmptySpace]
+
+  ],
+
+  printFullBoard(MidBoard),
+
+  getGoodPositionsBoard(MidBoard,Player,GoodPositionsList),
+
+
+  write('Empty Spaces: '), write(GoodPositionsList).
 
 
 %reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/testes.pl').

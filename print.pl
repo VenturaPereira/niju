@@ -79,7 +79,8 @@ printFullBoard(Board) :-
   write('   '),
   printColumnNumber(NumberOfColumns),
   nl,
-  printBoard(Board,0).
+  printBoard(Board,0),
+  !.
 
 printBoard([],_).
 

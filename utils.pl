@@ -180,4 +180,23 @@ readIntBetween(Int,Floor,Ceiling,Question,Error) :-
   readIntBetween(Int,Floor,Ceiling,Question,Error).
 
 
+countElementInList(List,Element,Count) :- countElementInList(List,Element,Count,0), !.
+
+countElementInList([],_,Count,Count).
+
+countElementInList(List,Element,Count,CountAux) :-
+
+  [Element|Rest] = List,
+  CountAux2 is CountAux + 1,
+  countElementInList(Rest,Element,Count,CountAux2).
+
+countElementInList(List,Element,Count,CountAux) :-
+
+  [_|Rest] = List,
+
+  countElementInList(Rest,Element,Count,CountAux).
+
+
+
+
 %

@@ -211,10 +211,139 @@ calculateGlobalScore(Board,GlobalScore, ScoreAux, RowNumber, NumberOfRows,Player
   NextRow is RowNumber + 1,
   calculateGlobalScore(Board,GlobalScore,CurrentScore,NextRow,NumberOfRows,Player).
 
+getPatternPosList(Board,Pattern,PatternPosList) :-
+  getPatternPosList(Board,Pattern,PatternPosList,[]).
+
+getPatternPosList(_,[],PatternPosList,PatternPosList).
+
+getPatternPosList(Board,Pattern,PatternPosList,AuxList) :-
+
+  [RowP,ColumnP|Rest] = Pattern,
+  getPieceFromBoard(Board,RowP,ColumnP,Piece),
+  playerFromPiece(Piece,PlayerPiece),
+  append(AuxList,[PlayerPiece,RowP,ColumnP],AuxList2),
+  getPatternPosList(Board,Rest,PatternPosList,AuxList2).
+
+checkDangerPiece(Board,Piece,PieceRow,PieceColumn,OpponentPlayer,Row,Column) :-
+
+  retrievePiecePattern(Piece,PieceRow,PieceColumn,Pattern),
+  getPatternPosList(Board,Pattern,PatternPosList),
+  countElementInList(PatternPosList,empty,1),
+  [PlayerPos1,Pos1Row,Pos1Column,PlayerPos2,Pos2Row,Pos2Column,PlayerPos3,Pos3Row,Pos3Column,PlayerPos4,Pos4Row,Pos4Column] = PatternPosList,
+
+  (
+
+    PlayerPos1 = empty, PlayerPos2 = OpponentPlayer, PlayerPos3 = OpponentPlayer, PlayerPos4 = OpponentPlayer, Row = Pos1Row, Column = Pos1Column;
+    PlayerPos2 = empty, PlayerPos1 = OpponentPlayer, PlayerPos3 = OpponentPlayer, PlayerPos4 = OpponentPlayer, Row = Pos2Row, Column = Pos2Column;
+    PlayerPos3 = empty, PlayerPos2 = OpponentPlayer, PlayerPos1 = OpponentPlayer, PlayerPos4 = OpponentPlayer, Row = Pos3Row, Column = Pos3Column;
+    PlayerPos4 = empty, PlayerPos2 = OpponentPlayer, PlayerPos3 = OpponentPlayer, PlayerPos1 = OpponentPlayer, Row = Pos4Row, Column = Pos4Column
+
+  ).
+
+checkDangerPiece(_,_,_,_,_,-1,-1).
+
+checkDefenseRow(PiecesRow,Board,PieceRow,Opponent,DangerList) :-
+
+  length(PiecesRow,NumberOfColumns),
+  checkDefenseRow(PiecesRow,Board,PieceRow,NumberOfColumns,0,Opponent,DangerList,[]).
+
+checkDefenseRow([],_,_,Col,Col,_,DangerList,DangerList).
+
+checkDefenseRow(PiecesRow,Board,PieceRow,PieceColumns,PieceColumnAux,Opponent,DangerList,DangerListAux) :-
+
+  [Piece|Rest] = PiecesRow, playerFromPiece(Piece,Opponent),
+  checkDangerPiece(Board,Piece,PieceRow,PieceColumnAux,Opponent,RowD,ColumnD),
+  RowD =\= -1,
+  ColumnD =\= -1,
+  append(DangerListAux, [RowD,ColumnD], DangerListAux2),
+  NewCol is PieceColumnAux + 1,
+  checkDefenseRow(Rest,Board,PieceRow,PieceColumns,NewCol,Opponent,DangerList,DangerListAux2).
+
+checkDefenseRow(PiecesRow,Board,PieceRow,PieceColumns,PieceColumnAux,Opponent,DangerList,DangerListAux) :-
+
+  [_|Rest] = PiecesRow,
+  NewCol is PieceColumnAux + 1,
+  checkDefenseRow(Rest,Board,PieceRow,PieceColumns,NewCol,Opponent,DangerList,DangerListAux).
+
+checkDefense(Board,Rows,Opponent,DangerList) :-
+
+  length(Rows,NumberOfRows),
+  checkDefense(Board,Rows,Opponent,NumberOfRows,0,DangerList,[]).
+
+checkDefense(Board, Rows, Opponent, NumberOfRows, CurrentRow, DangerList, DangerListAux) :-
+
+  [Row|Rest] = Rows,
+  checkDefenseRow(Row,Board,CurrentRow,Opponent,DangerListRow),
+  append(DangerListAux,DangerListRow,DangerListAux2),
+  NextRow is CurrentRow + 1,
+  checkDefense(Board,Rest,Opponent,NumberOfRows,NextRow,DangerList,DangerListAux2).
+
+checkDefense(_,[],_,NumberOfRows,NumberOfRows,DangerList,DangerList).
+
+
+getGoodPositionsBoard(Board,Player,GoodPositionsList) :-
+
+  getGoodPositionsBoard(Board,Board,Player,0,GoodPositionsList,[]).
+
+getGoodPositionsBoard(_,[],_,_,GoodPositionsList,GoodPositionsList).
+
+getGoodPositionsBoard(Board,Rows,Player, CurrentRow, GoodPositionsList, GoodPositionsListAux) :-
+
+  [Row|Rest] = Rows,
+  getGoodPositionsBoardRowPieces(Board,Player,Row,CurrentRow,GoodPositionsListRow),
+  append(GoodPositionsListAux,GoodPositionsListRow,GoodPositionsListAux2),
+  NextRow is CurrentRow + 1,
+  getGoodPositionsBoard(Board,Rest,Player,NextRow, GoodPositionsList, GoodPositionsListAux2).
 
 
 
 
+getGoodPositionsBoardRowPieces(Board,Player,Row,RowNumber,GoodPositionsList) :-
+
+  getGoodPositionsBoardRowPieces(Board,Player,Row,RowNumber,0,GoodPositionsList,[]).
+
+getGoodPositionsBoardRowPieces(_,_,[],_,_,GoodPositionsList,GoodPositionsList).
+
+getGoodPositionsBoardRowPieces(Board,Player,Row,RowNumber,CurrentColumn,GoodPositionsList,GoodPositionsListAux) :-
+
+  [Piece|Rest] = Row,
+  playerFromPiece(Piece,Player),
+  getGoodPositionsPiece(Board,Piece,RowNumber,CurrentColumn,GoodPositionsCurrentPiece),
+  append(GoodPositionsListAux,GoodPositionsCurrentPiece,GoodPositionsListAux2),
+  NextColumn is CurrentColumn + 1,
+  getGoodPositionsBoardRowPieces(Board,Player,Rest,RowNumber,NextColumn,GoodPositionsList, GoodPositionsListAux2).
+
+getGoodPositionsBoardRowPieces(Board,Player,Row,RowNumber,CurrentColumn,GoodPositionsList,GoodPositionsListAux) :-
+
+  [_|Rest] = Row,
+  NextColumn is CurrentColumn + 1,
+  getGoodPositionsBoardRowPieces(Board,Player,Rest,RowNumber,NextColumn,GoodPositionsList, GoodPositionsListAux).
+
+getGoodPositionsPiece(Board,Piece,PieceRow,PieceColumn,GoodPositionsList) :-
+
+  retrievePiecePattern(Piece,PieceRow,PieceColumn,Pattern),
+  getPatternPosList(Board,Pattern,PatternPosList),
+  getEmptySpacesFromPatternPosList(PatternPosList,GoodPositionsList).
+
+getEmptySpacesFromPatternPosList(PatternList,EmptySpaces) :-
+
+  write(PatternList),nl,
+  getEmptySpacesFromPatternPosList(PatternList,EmptySpaces,[]).
+
+getEmptySpacesFromPatternPosList([],EmptySpaces,EmptySpaces).
+
+getEmptySpacesFromPatternPosList(PatternList, EmptySpaces, EmptySpacesAux) :-
+
+  [empty,EmptySpaceRow,EmptySpaceColumn|Rest] = PatternList,
+
+  append(EmptySpacesAux,[EmptySpaceRow,EmptySpaceColumn],EmptySpacesAux2),
+
+  getEmptySpacesFromPatternPosList(Rest,EmptySpaces,EmptySpacesAux2).
+
+getEmptySpacesFromPatternPosList(PatternList, EmptySpaces, EmptySpacesAux) :-
+
+  [_,_,_|Rest] = PatternList,
+  getEmptySpacesFromPatternPosList(Rest,EmptySpaces,EmptySpacesAux).
 
 
 %
