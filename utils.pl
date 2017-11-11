@@ -1,7 +1,6 @@
-%reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/utils.pl').
-
 :- use_module(library(lists)).
 :- use_module(library(clpfd)).
+:- use_module(library(random)).
 
 not(X) :- X, !, fail.
 not(_).
@@ -195,8 +194,3 @@ countElementInList(List,Element,Count,CountAux) :-
   [_|Rest] = List,
 
   countElementInList(Rest,Element,Count,CountAux).
-
-
-
-
-%

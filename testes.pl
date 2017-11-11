@@ -1,5 +1,3 @@
-%reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/testes.pl').
-
 :-include('interface.pl').
 
 testPrintIsolatedPiece(PieceNumber) :-
@@ -469,7 +467,7 @@ testDanger :-
   write(DangerList).
 
 
-testGPES(Row,Column) :-
+testGPES(Row,Column,Player) :-
 
   emptySpace(EmptySpace),
   buildPiecesP1(Pieces),
@@ -492,7 +490,7 @@ testGPES(Row,Column) :-
   printFullBoard(MidBoard),
   getPieceFromBoard(MidBoard,Row,Column,PieceFromBoard),
 
-  getGoodPositionsPiece(MidBoard,PieceFromBoard,Row,Column,EmptySpaces),
+  getGoodPositionsPiece(MidBoard,PieceFromBoard,Player,Row,Column,EmptySpaces),
 
   write('Empty Spaces: '), write(EmptySpaces).
 
@@ -540,9 +538,10 @@ testGES(Player) :-
 
   MidBoard = [
 
-    [Piece1,Piece2,Piece3],
-    [EmptySpace,Piece,EmptySpace],
-    [EmptySpace,PieceP2,EmptySpace]
+    [EmptySpace,EmptySpace,EmptySpace,EmptySpace,EmptySpace],
+    [EmptySpace,Piece1,Piece2,Piece3,EmptySpace],
+    [EmptySpace,Piece1,Piece,Piece1,EmptySpace],
+    [EmptySpace,EmptySpace,PieceP2,Piece1,EmptySpace]
 
   ],
 
@@ -554,4 +553,97 @@ testGES(Player) :-
   write('Empty Spaces: '), write(GoodPositionsList).
 
 
-%reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/testes.pl').
+
+testKS :-
+
+  L = [5-[1,0],7-[6,1],1-[3,5]],
+  keysort(L,S),
+  write(S).
+
+
+testVPR(RowNumber) :-
+
+  emptySpace(EmptySpace),
+  buildPiecesP1(Pieces),
+  nth0(0,Pieces,Piece),
+  nth0(1,Pieces,Piece1),
+  nth0(2,Pieces,Piece2),
+  nth0(3,Pieces,Piece3),
+
+  buildPiecesP2(PiecesP2),
+  nth0(0,PiecesP2,PieceP2),
+
+  MidBoard = [
+
+    [Piece1,Piece2,Piece3],
+    [EmptySpace,Piece,EmptySpace],
+    [EmptySpace,PieceP2,EmptySpace]
+
+  ],
+
+  printFullBoard(MidBoard),
+  nth0(RowNumber,MidBoard,Row),
+
+  getValidPositionsInRow(MidBoard,Row,RowNumber,ValidPositionsList),
+  write(ValidPositionsList).
+
+
+testVP :-
+
+  emptySpace(EmptySpace),
+  buildPiecesP1(Pieces),
+  nth0(0,Pieces,Piece),
+  nth0(1,Pieces,Piece1),
+  nth0(2,Pieces,Piece2),
+  nth0(3,Pieces,Piece3),
+
+  buildPiecesP2(PiecesP2),
+  nth0(0,PiecesP2,PieceP2),
+
+  MidBoard = [
+
+    [Piece1,Piece2,Piece3],
+    [EmptySpace,Piece,EmptySpace],
+    [EmptySpace,PieceP2,EmptySpace]
+
+  ],
+
+  printFullBoard(MidBoard),
+
+  getAllValidPositions(MidBoard,ValidPositionsList),
+  write(ValidPositionsList).
+
+
+testGRP :-
+
+  buildPiecesP1(Pieces),
+  getRandomPieceNumber(Pieces,PieceNumber),
+  nth0(PieceNumber,Pieces,Piece),
+  printIsolatedPiece(Piece,player1).
+
+
+testGESD(Player,Opponent) :-
+
+  emptySpace(EmptySpace),
+  buildPiecesP1(Pieces),
+  nth0(0,Pieces,Piece),
+  %nth0(1,Pieces,Piece1),
+  nth0(2,Pieces,Piece2),
+  nth0(3,Pieces,Piece3),
+
+  buildPiecesP2(PiecesP2),
+  nth0(0,PiecesP2,PieceP2),
+
+  MidBoard = [
+
+    [EmptySpace,EmptySpace,EmptySpace,EmptySpace,EmptySpace],
+    [EmptySpace,PieceP2,Piece2,Piece3,EmptySpace],
+    [EmptySpace,PieceP2,Piece,EmptySpace,EmptySpace],
+    [EmptySpace,EmptySpace,EmptySpace,EmptySpace,EmptySpace]
+
+  ],
+
+  printFullBoard(MidBoard),
+
+  getGoodPositionsBoardWithDefense(MidBoard,Player,Opponent,GoodPositionsList),
+  write('Empty Spaces: '), write(GoodPositionsList).

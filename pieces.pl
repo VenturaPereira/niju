@@ -1,6 +1,6 @@
 :- include('utils.pl').
 
-numberOfPieces(5).
+numberOfPieces(20).
 
 piece(1,[[1,1,1],[0,x,1],[0,0,0]]).
 piece(2,[[1,1,1],[0,x,0],[0,0,1]]).
@@ -102,3 +102,11 @@ playerFromPiece(Piece,empty) :-
 
   nth0(1,Piece,R2),
   nth0(1,R2,-1).
+
+
+getRandomPieceNumber(Pieces,PieceNumber) :-
+
+  length(Pieces,NumberOfPieces),
+  Max is NumberOfPieces,
+  Min is 0,
+  random(Min,Max,PieceNumber).

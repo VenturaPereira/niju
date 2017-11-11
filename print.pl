@@ -26,7 +26,7 @@ printColumnNumber(NumberOfColumns,Column) :-
 
 printInitialPieceRowSeparation(BoardRow) :-
 
-  write('    --------- '),
+  write('      --------- '),
   [_ | Rest] = BoardRow,
   printPieceRowSeparation(Rest).
 
@@ -41,7 +41,7 @@ printPieceRowSeparation(BoardRow) :-
 
 printFirstPieceRow([X1,X2,X3]) :-
 
-  write('   |'),
+  write('     |'),
   printElement(X1),
   printElement(X2),
   printElement(X3),
@@ -57,8 +57,21 @@ printPieceRow([X1,X2,X3]) :-
 
 printFirstPieceRow2([X1,_,X3],Player,RowNumber) :-
 
+  RowNumber < 10,
+
   write(RowNumber),
-  write('  |'),
+  write('    |'),
+  printElement(X1),
+  printPlayerMark(Player),
+  printElement(X3),
+  write('|').
+
+printFirstPieceRow2([X1,_,X3],Player,RowNumber) :-
+
+  RowNumber >= 10,
+
+  write(RowNumber),
+  write('   |'),
   printElement(X1),
   printPlayerMark(Player),
   printElement(X3),
@@ -183,18 +196,11 @@ printPlayerPiecesIndex(NumberOfPieces, PieceNumber) :-
   NextPiece is PieceNumber + 1,
   printPlayerPiecesIndex(NumberOfPieces,NextPiece).
 
-printPlayerTitle(player1) :-
-  write('Pieces Player 1: '),nl,nl.
-
-printPlayerTitle(player2) :-
-  write('Pieces Player 2: '),nl,nl.
-
 
 printPlayerPieces(Pieces,Player) :-
 
   length(Pieces,NumberOfPieces),
   nl,
-  printPlayerTitle(Player),
   printPlayerPiecesIndexSeparation(NumberOfPieces),nl,
   printPlayerPiecesIndex(NumberOfPieces),nl,
   printPlayerPiecesIndexSeparation(NumberOfPieces),nl,
@@ -256,7 +262,7 @@ printMenuTitle :-
   write('                        *                                                                                      *'),nl,
   write('                        *                                                                                      *'),nl,
   write('                        *                                                                                      *'),nl,
-  write('                        *                                   1 - Play 1 VS 1                                    *'),nl,
+  write('                        *                                   1 - Play New Game                                  *'),nl,
   write('                        *                                                                                      *'),nl,
   write('                        *                                                                                      *'),nl,
   write('                        *                                   2 - Rules                                          *'),nl,
@@ -273,28 +279,29 @@ printMenuTitle :-
 
 %printrules
 
-printRules :-
+printPlayMenu :-
   write('                        ****************************************************************************************'),nl,
   write('                        *                                                                                      *'),nl,
-  write('                        *                                        Rules                                         *'),nl,
-  write('                        *                                                                                      *'),nl,
-  write('                        *              40 Tiles will be distribucted equally between two players.              *'),nl,
   write('                        *                                                                                      *'),nl,
   write('                        *                                                                                      *'),nl,
-  write('                        *              Each piece has a pattern. The goal is to replicate the pattern          *'),nl,
-  write('                        *              of the piece around that piece with other pieces.                       *'),nl,
+  write('                        *                                   1 - Human VS Human                                 *'),nl,
   write('                        *                                                                                      *'),nl,
   write('                        *                                                                                      *'),nl,
-  write('                        *              You can rotate the piece you wish to play.                              *'),nl,
+  write('                        *                                   2 - Human VS Computer Easy                         *'),nl,
   write('                        *                                                                                      *'),nl,
   write('                        *                                                                                      *'),nl,
-  write('                        *              The game ends when no pieces are left to play.                          *'),nl,
+  write('                        *                                   3 - Human VS Computer Medium                       *'),nl,
   write('                        *                                                                                      *'),nl,
   write('                        *                                                                                      *'),nl,
-  write('                        *              The winner will be the player with most patterns completed.             *'),nl,
+  write('                        *                                   4 - Human VS Computer Hard                         *'),nl,
   write('                        *                                                                                      *'),nl,
   write('                        *                                                                                      *'),nl,
-  write('                        *                                 Press 0 to go back !                                 *'),nl,
+  write('                        *                                   5 - Computer VS Computer                           *'),nl,
+  write('                        *                                                                                      *'),nl,
+  write('                        *                                                                                      *'),nl,
+  write('                        *                                   0 - Go Back                                        *'),nl,
+  write('                        *                                                                                      *'),nl,
+  write('                        *                                                                                      *'),nl,
   write('                        *                                                                                      *'),nl,
   write('                        ****************************************************************************************'),nl.
 
@@ -327,36 +334,95 @@ printCredits :-
   write('                        ****************************************************************************************'),nl.
 
 %printFinalScore
-printWinnerPlayer(player1) :-
-  write('WINNER: Player 1').
 
-printWinnerPlayer(player2) :-
-  write('WINNER: Player 2').
 
-printWinnerPlayer(empty)   :-
-  write('IT WAS A TIE').
+printWinnerPlayer(ScorePlayer1,ScorePlayer2,NamePlayer1,_) :-
 
-printFinalScore(WinnerScore,LoserScore, WinnerPlayer) :-
-write('                        ****************************************************************************************'),nl,
-write('                        *                                                                                      *'),nl,
-write('                        *                                  FINAL SCORE                                         *'),nl,
-write('                        *                                                                                      *'),nl,
-write('                        *                                                                                      *'),nl,
-write('                        *                                                                                      *'),nl,
-write('                        *                                  '),printWinnerPlayer(WinnerPlayer), write('                                        *'),nl,
-write('                        *                                                                                      *'),nl,
-write('                        *                                                                                      *'),nl,
-write('                        *                                  Player 1:  '),write(WinnerScore), write('                                        *'),nl,
-write('                        *                                                                                      *'),nl,
-write('                        *                                  Player 2:  '),write(LoserScore), write('                                        *'),nl,
-write('                        *                                                                                      *'),nl,
-write('                        *                                                                                      *'),nl,
-write('                        *                                                                                      *'),nl,
-write('                        *                                                                                      *'),nl,
-write('                        *                                                                                      *'),nl,
-write('                        *                                                                                      *'),nl,
-write('                        *                                                                                      *'),nl,
-write('                        *                                                                                      *'),nl,
-write('                        *                                                                                      *'), nl,
-write('                        *                                 Press 0 to go to the Menu !                          *'),nl,
-write('                        ****************************************************************************************'),nl.
+  ScorePlayer1 > ScorePlayer2,
+
+  write('                        *'),
+
+  atom_length(NamePlayer1,LengthNamePlayer),
+  Total is LengthNamePlayer + 8,
+  Spaces is 86 - Total,
+  LeftSpaces is div(Spaces,2),
+  printNSpaces(LeftSpaces),
+
+  write('Winner: '), write(NamePlayer1),
+
+  Remaining is 86 - Total - LeftSpaces,
+  printNSpaces(Remaining),
+  write('*'),nl.
+
+
+printWinnerPlayer(ScorePlayer1,ScorePlayer2,_,NamePlayer2) :-
+
+  ScorePlayer1 < ScorePlayer2,
+
+  write('                        *'),
+  atom_length(NamePlayer2,LengthNamePlayer),
+  Total is LengthNamePlayer + 8,
+  Spaces is 86 - Total,
+  LeftSpaces is div(Spaces,2),
+  printNSpaces(LeftSpaces),
+  write('Winner: '), write(NamePlayer2),
+  Remaining is 86 - Total - LeftSpaces,
+  printNSpaces(Remaining),
+  write('*'),nl.
+
+printWinnerPlayer(ScorePlayer,ScorePlayer,_,_) :-
+
+  write('                        *'),
+  printNSpaces(37),
+  write('It Was a Tie'),
+  printNSpaces(37),
+  write('*'),nl.
+
+printPlayerScore(Player,PlayerScore) :-
+
+  write('                        *'),
+  atom_length(Player,LengthNamePlayer),
+  Total is LengthNamePlayer + 10,
+  Spaces is 86 - Total,
+  LeftSpaces is div(Spaces,2),
+  printNSpaces(LeftSpaces),
+  write(Player), write(': '), write(PlayerScore), write(' Points'),
+  Remaining is 86 - Total - LeftSpaces,
+  printNSpaces(Remaining),
+  write('*'),nl.
+
+
+printFinalScore(ScorePlayer1,ScorePlayer2,NamePlayer1,NamePlayer2) :-
+  write('                        ****************************************************************************************'),nl,
+  write('                        *                                                                                      *'),nl,
+  write('                        *                                     GAME IS OVER                                     *'),nl,
+  write('                        *                                                                                      *'),nl,
+  write('                        *                                                                                      *'),nl,
+  printWinnerPlayer(ScorePlayer1,ScorePlayer2,NamePlayer1,NamePlayer2),
+  write('                        *                                                                                      *'),nl,
+  write('                        *                                                                                      *'),nl,
+  write('                        *                                                                                      *'),nl,
+  write('                        *                                     FINAL SCORE:                                     *'),nl,
+  write('                        *                                                                                      *'),nl,
+  write('                        *                                                                                      *'),nl,
+  printPlayerScore(NamePlayer1,ScorePlayer1),
+  write('                        *                                                                                      *'),nl,
+  printPlayerScore(NamePlayer2,ScorePlayer2),
+  write('                        *                                                                                      *'),nl,
+  write('                        *                                                                                      *'),nl,
+  write('                        *                                                                                      *'),nl,
+  write('                        *                                                                                      *'),nl,
+  write('                        *                                                                                      *'),nl,
+  write('                        *                                                                                      *'), nl,
+  write('                        *                             Press 0 to go to the Menu !                              *'),nl,
+  write('                        ****************************************************************************************'),nl.
+
+
+
+printNSpaces(0).
+
+printNSpaces(N) :-
+
+  write(' '),
+  N1 is N - 1,
+  printNSpaces(N1).

@@ -1,5 +1,7 @@
 :-include('pieces.pl').
 
+defensePercentage(0.3).
+
 initialBoard(InitialBoard) :-
 
   emptySpace(EmptySpace),
@@ -255,7 +257,7 @@ checkDefenseRow(PiecesRow,Board,PieceRow,PieceColumns,PieceColumnAux,Opponent,Da
   checkDangerPiece(Board,Piece,PieceRow,PieceColumnAux,Opponent,RowD,ColumnD),
   RowD =\= -1,
   ColumnD =\= -1,
-  append(DangerListAux, [RowD,ColumnD], DangerListAux2),
+  append(DangerListAux, [[RowD,ColumnD]], DangerListAux2),
   NewCol is PieceColumnAux + 1,
   checkDefenseRow(Rest,Board,PieceRow,PieceColumns,NewCol,Opponent,DangerList,DangerListAux2).
 
@@ -281,9 +283,49 @@ checkDefense(Board, Rows, Opponent, NumberOfRows, CurrentRow, DangerList, Danger
 checkDefense(_,[],_,NumberOfRows,NumberOfRows,DangerList,DangerList).
 
 
+getGoodPositionsBoardWithDefense(Board,_,Opponent,GoodPositionsList) :-
+
+  checkDefense(Board,Board,Opponent,GoodPositionsListWithInvalids),
+  GoodPositionsListWithInvalids \= [],
+  removeInvalidPositions(GoodPositionsListWithInvalids,Board,GoodPositionsList),
+  write('There is position in dangerous'),nl.
+
+getGoodPositionsBoardWithDefense(Board,Player,_,GoodPositionsList) :-
+
+  getGoodPositionsBoard(Board,Player,GoodPositionsList).
+
+removeInvalidPositions(PositionsList,Board,PositionsFiltered) :-
+  removeInvalidPositions(PositionsList,Board,PositionsFiltered,[]).
+
+removeInvalidPositions([],_,PositionsFiltered,PositionsFiltered).
+
+removeInvalidPositions(PositionsList,Board,PositionsFiltered,PositionsFilteredAux) :-
+
+  [[Row,Column]|Rest] = PositionsList,
+  \+ validPlay(Board,Row,Column),
+  removeInvalidPositions(Rest,Board,PositionsFiltered,PositionsFilteredAux).
+
+removeInvalidPositions(PositionsList,Board,PositionsFiltered,PositionsFilteredAux) :-
+
+  [[Row,Column]|Rest] = PositionsList,
+  validPlay(Board,Row,Column),
+  append(PositionsFilteredAux,[[Row,Column]], PositionsFilteredAux2),
+  removeInvalidPositions(Rest,Board,PositionsFiltered,PositionsFilteredAux2).
+
+
+verifyGoodPositionEmpty(GoodPositionsList,GoodPositionsList,_) :-
+  GoodPositionsList \= [].
+
+verifyGoodPositionEmpty([],GoodPositionsList,Board) :-
+  getAllValidPositions(Board,GoodPositionsList).
+
 getGoodPositionsBoard(Board,Player,GoodPositionsList) :-
 
-  getGoodPositionsBoard(Board,Board,Player,0,GoodPositionsList,[]).
+  getGoodPositionsBoard(Board,Board,Player,0,GoodPositionsListWithPriority,[]),
+  keysort(GoodPositionsListWithPriority,GoodPositionsListWithPrioritySorted),
+  removePriorityBeforeEmptySpace(GoodPositionsListWithPrioritySorted,GoodPositionsListPossibleEmpty),
+  verifyGoodPositionEmpty(GoodPositionsListPossibleEmpty,GoodPositionsListWithInvalids,Board),
+  removeInvalidPositions(GoodPositionsListWithInvalids,Board,GoodPositionsList).
 
 getGoodPositionsBoard(_,[],_,_,GoodPositionsList,GoodPositionsList).
 
@@ -295,9 +337,6 @@ getGoodPositionsBoard(Board,Rows,Player, CurrentRow, GoodPositionsList, GoodPosi
   NextRow is CurrentRow + 1,
   getGoodPositionsBoard(Board,Rest,Player,NextRow, GoodPositionsList, GoodPositionsListAux2).
 
-
-
-
 getGoodPositionsBoardRowPieces(Board,Player,Row,RowNumber,GoodPositionsList) :-
 
   getGoodPositionsBoardRowPieces(Board,Player,Row,RowNumber,0,GoodPositionsList,[]).
@@ -308,7 +347,7 @@ getGoodPositionsBoardRowPieces(Board,Player,Row,RowNumber,CurrentColumn,GoodPosi
 
   [Piece|Rest] = Row,
   playerFromPiece(Piece,Player),
-  getGoodPositionsPiece(Board,Piece,RowNumber,CurrentColumn,GoodPositionsCurrentPiece),
+  getGoodPositionsPiece(Board,Piece,Player,RowNumber,CurrentColumn,GoodPositionsCurrentPiece),
   append(GoodPositionsListAux,GoodPositionsCurrentPiece,GoodPositionsListAux2),
   NextColumn is CurrentColumn + 1,
   getGoodPositionsBoardRowPieces(Board,Player,Rest,RowNumber,NextColumn,GoodPositionsList, GoodPositionsListAux2).
@@ -319,31 +358,105 @@ getGoodPositionsBoardRowPieces(Board,Player,Row,RowNumber,CurrentColumn,GoodPosi
   NextColumn is CurrentColumn + 1,
   getGoodPositionsBoardRowPieces(Board,Player,Rest,RowNumber,NextColumn,GoodPositionsList, GoodPositionsListAux).
 
-getGoodPositionsPiece(Board,Piece,PieceRow,PieceColumn,GoodPositionsList) :-
+getGoodPositionsPiece(Board,Piece,Player,PieceRow,PieceColumn,GoodPositionsList) :-
 
   retrievePiecePattern(Piece,PieceRow,PieceColumn,Pattern),
   getPatternPosList(Board,Pattern,PatternPosList),
-  getEmptySpacesFromPatternPosList(PatternPosList,GoodPositionsList).
+  getEmptySpacesFromPatternPosList(PatternPosList,Player,GoodPositionsList).
 
-getEmptySpacesFromPatternPosList(PatternList,EmptySpaces) :-
+insertPriorityBeforeEmptySpace(EmptySpacesWithoutPriority,NumberEmptyPos,Sum,EmptySpaces) :-
 
-  write(PatternList),nl,
-  getEmptySpacesFromPatternPosList(PatternList,EmptySpaces,[]).
+  insertPriorityBeforeEmptySpace(EmptySpacesWithoutPriority,NumberEmptyPos,Sum,EmptySpaces,[]).
 
-getEmptySpacesFromPatternPosList([],EmptySpaces,EmptySpaces).
+insertPriorityBeforeEmptySpace([],_,_,EmptySpaces,EmptySpaces).
 
-getEmptySpacesFromPatternPosList(PatternList, EmptySpaces, EmptySpacesAux) :-
+insertPriorityBeforeEmptySpace(EmptySpacesWithoutPriority,NumberEmptyPos,Sum,EmptySpaces,EmptySpacesAux) :-
+
+  Sum =\= 4,
+  [RowWP,ColWP|Rest] = EmptySpacesWithoutPriority,
+  append(EmptySpacesAux,[4-[RowWP,ColWP]],EmptySpacesAux2),
+  insertPriorityBeforeEmptySpace(Rest,NumberEmptyPos,Sum,EmptySpaces,EmptySpacesAux2).
+
+insertPriorityBeforeEmptySpace(EmptySpacesWithoutPriority,NumberEmptyPos,4,EmptySpaces,EmptySpacesAux) :-
+
+  [RowWP,ColWP|Rest] = EmptySpacesWithoutPriority,
+  append(EmptySpacesAux,[NumberEmptyPos-[RowWP,ColWP]],EmptySpacesAux2),
+  insertPriorityBeforeEmptySpace(Rest,NumberEmptyPos,4,EmptySpaces,EmptySpacesAux2).
+
+removePriorityBeforeEmptySpace(GoodPositionsWithPriority,GoodPositions) :-
+
+  removePriorityBeforeEmptySpace(GoodPositionsWithPriority,GoodPositions,[]).
+
+removePriorityBeforeEmptySpace([],GoodPositions,GoodPositions).
+
+removePriorityBeforeEmptySpace(GoodPositionsWithPriority,GoodPositions,GoodPositionsAux) :-
+
+  [_-EmptySpace|Rest] = GoodPositionsWithPriority,
+  append(GoodPositionsAux,[EmptySpace],GoodPositionsAux2),
+  removePriorityBeforeEmptySpace(Rest,GoodPositions,GoodPositionsAux2).
+
+getEmptySpacesFromPatternPosList(PatternList,Player,EmptySpaces) :-
+
+  getEmptySpacesFromPatternPosListR(PatternList,EmptySpacesWithoutPriority,[]),
+
+  [PlayerPos1,_,_,
+  PlayerPos2,_,_,
+  PlayerPos3,_,_,
+  PlayerPos4,_,_] = PatternList,
+
+  PositionsOwns = [PlayerPos1,PlayerPos2,PlayerPos3,PlayerPos4],
+
+  countElementInList(PositionsOwns,empty,NumberOfEmptyPos),
+  countElementInList(PositionsOwns,Player,NumberOfPlayerPos),
+  EmptyPosPlusPlayerPos is NumberOfEmptyPos + NumberOfPlayerPos,
+
+  insertPriorityBeforeEmptySpace(EmptySpacesWithoutPriority,NumberOfEmptyPos,EmptyPosPlusPlayerPos,EmptySpaces).
+
+getEmptySpacesFromPatternPosListR([],EmptySpaces,EmptySpaces).
+
+getEmptySpacesFromPatternPosListR(PatternList, EmptySpaces, EmptySpacesAux) :-
 
   [empty,EmptySpaceRow,EmptySpaceColumn|Rest] = PatternList,
 
   append(EmptySpacesAux,[EmptySpaceRow,EmptySpaceColumn],EmptySpacesAux2),
 
-  getEmptySpacesFromPatternPosList(Rest,EmptySpaces,EmptySpacesAux2).
+  getEmptySpacesFromPatternPosListR(Rest,EmptySpaces,EmptySpacesAux2).
 
-getEmptySpacesFromPatternPosList(PatternList, EmptySpaces, EmptySpacesAux) :-
+getEmptySpacesFromPatternPosListR(PatternList, EmptySpaces, EmptySpacesAux) :-
 
   [_,_,_|Rest] = PatternList,
-  getEmptySpacesFromPatternPosList(Rest,EmptySpaces,EmptySpacesAux).
+  getEmptySpacesFromPatternPosListR(Rest,EmptySpaces,EmptySpacesAux).
 
+getAllValidPositions(Board,ValidPositionsList) :-
+  getAllValidPositions(Board,Board,0,ValidPositionsList,[]).
 
-%
+getAllValidPositions(_,[],_,ValidPositionsList,ValidPositionsList).
+
+getAllValidPositions(Board,Rows,CurrentRow,ValidPositionsList,ValidPositionsListAux) :-
+
+  [Row|Rest] = Rows,
+  getValidPositionsInRow(Board,Row,CurrentRow,ValidPositionsListCurrentRow),
+  append(ValidPositionsListAux,ValidPositionsListCurrentRow,ValidPositionsListAux2),
+  NextRow is CurrentRow + 1,
+  getAllValidPositions(Board,Rest,NextRow,ValidPositionsList,ValidPositionsListAux2).
+
+getValidPositionsInRow(Board,Row,RowNumber,ValidPositionsList) :-
+
+  getValidPositionsInRow(Board,Row,RowNumber,0,ValidPositionsList,[]).
+
+getValidPositionsInRow(_, [], _, _,ValidPositionsList, ValidPositionsList).
+
+getValidPositionsInRow(Board, Row, RowNumber, CurrentColumn,ValidPositionsList, ValidPositionsListAux) :-
+
+  [_|Rest] = Row,
+  \+validPlay(Board,RowNumber,CurrentColumn),
+  NextColumn is CurrentColumn + 1,
+  getValidPositionsInRow(Board,Rest,RowNumber,NextColumn,ValidPositionsList,ValidPositionsListAux).
+
+getValidPositionsInRow(Board, Row, RowNumber, CurrentColumn,ValidPositionsList, ValidPositionsListAux) :-
+
+  [_|Rest] = Row,
+  validPlay(Board,RowNumber,CurrentColumn),
+  append(ValidPositionsListAux,[[RowNumber,CurrentColumn]],ValidPositionsListAux2),
+  NextColumn is CurrentColumn + 1,
+  getValidPositionsInRow(Board,Rest,RowNumber,NextColumn,ValidPositionsList,ValidPositionsListAux2).
