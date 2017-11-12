@@ -267,10 +267,10 @@ checkDefenseRow(PiecesRow,Board,PieceRow,PieceColumns,PieceColumnAux,Opponent,Da
   NewCol is PieceColumnAux + 1,
   checkDefenseRow(Rest,Board,PieceRow,PieceColumns,NewCol,Opponent,DangerList,DangerListAux).
 
-checkDefense(Board,Rows,Opponent,DangerList) :-
+checkDefense(Board,Opponent,DangerList) :-
 
-  length(Rows,NumberOfRows),
-  checkDefense(Board,Rows,Opponent,NumberOfRows,0,DangerList,[]).
+  length(Board,NumberOfRows),
+  checkDefense(Board,Board,Opponent,NumberOfRows,0,DangerList,[]).
 
 checkDefense(Board, Rows, Opponent, NumberOfRows, CurrentRow, DangerList, DangerListAux) :-
 
@@ -285,10 +285,11 @@ checkDefense(_,[],_,NumberOfRows,NumberOfRows,DangerList,DangerList).
 
 getGoodPositionsBoardWithDefense(Board,_,Opponent,GoodPositionsList) :-
 
-  checkDefense(Board,Board,Opponent,GoodPositionsListWithInvalids),
+  checkDefense(Board,Opponent,GoodPositionsListWithInvalids),
   GoodPositionsListWithInvalids \= [],
   removeInvalidPositions(GoodPositionsListWithInvalids,Board,GoodPositionsList),
-  write('There is position in dangerous'),nl.
+  write('There are position in dangerous!'),nl,
+  write('Defense List: '), write(GoodPositionsList),nl.
 
 getGoodPositionsBoardWithDefense(Board,Player,_,GoodPositionsList) :-
 
