@@ -336,14 +336,12 @@ getRandomElementAttackDefense(_, DefenseList, Row, Column, Random) :-
 
   defensePercentage(DefensePercentage),
   Random < DefensePercentage,
-  nl, write('Trying to Defend if there are positions in dangerous!'),nl,nl,
   nth0(0,DefenseList,[Row,Column]).
 
 getRandomElementAttackDefense(AttackList, _, Row, Column, Random) :-
 
   defensePercentage(DefensePercentage),
   Random >= DefensePercentage,
-  nl, write('Attacking!!'),nl,nl,
   nth0(0,AttackList,[Row,Column]).
 
 

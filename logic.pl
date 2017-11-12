@@ -287,9 +287,7 @@ getGoodPositionsBoardWithDefense(Board,_,Opponent,GoodPositionsList) :-
 
   checkDefense(Board,Opponent,GoodPositionsListWithInvalids),
   GoodPositionsListWithInvalids \= [],
-  removeInvalidPositions(GoodPositionsListWithInvalids,Board,GoodPositionsList),
-  write('There are position in dangerous!'),nl,
-  write('Defense List: '), write(GoodPositionsList),nl.
+  removeInvalidPositions(GoodPositionsListWithInvalids,Board,GoodPositionsList).
 
 getGoodPositionsBoardWithDefense(Board,Player,_,GoodPositionsList) :-
 
