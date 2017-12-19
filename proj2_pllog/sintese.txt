@@ -1,0 +1,43 @@
+﻿Instâncias:
+
+Pessoas presentes no campo de férias -> identificador nome/altura/sexo;
+
+cognitivas referentes a pessoas -> habilidade de cantar, jogar futebol, programar, etc;
+
+Eventos -> refeições, jogos, etc;
+
+
+Grupos dividem-se por tarefa, ao longo do dia.
+Objetivo de optimização:
+
+Não repetição, ou as minimas possíveis, de elementos nos grupos, ao longo do dia.
+Ex:
+
+Elementos: A, B, C, D;
+
+Tarefa 1: 
+A,B e C,D
+
+Tarefa 2:
+
+A,D e C,B
+
+etc.
+
+Pode haver necessidade de haver alguma condição extra -> garantir que x grupo tenha pelo menos um participante do sexo masculino, p.e;
+
+Resolver problema com restrições desta classe com diferentes parâmetros, isto é, diferentes participantes e suas caracteristicas, diferentes numeros de atividades e requisitos.
+
+Minha sugestão:
+
+Classe participante, classse atividade. 
+Atribuição de caracteristicas, talvez como as peças ? Identificadores, etc?
+
+o "optimiza" trataria de analisar cada um e aplicar as restrições. 
+
+Sugestão de divisão:
+
+Dividir as classes, um com pessoa, outro com atividades e, partindo daí, vê-se.
+
+Agora apaga tudo,
+Força Porto!
