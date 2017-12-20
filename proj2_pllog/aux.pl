@@ -97,6 +97,11 @@ getParticipantAttSep(PartSexs, PartHeights, PartAges) :-
     getParticipantHeights(PhysicalAtts, [], PartHeights),
     getParticipantAges(PhysicalAtts, [], PartAges).
 
+getParticipantSexs(PartSexs) :-
+
+    participantPhysicalAtt(PhysicalAtts),
+    getParticipantSexs(PhysicalAtts, [], PartSexs).
+
 getParticipantSexs([], PartSexs, PartSexs).
 
 getParticipantSexs([[_,_,Sex]|Rest], Aux, PartSexs) :-
@@ -104,12 +109,23 @@ getParticipantSexs([[_,_,Sex]|Rest], Aux, PartSexs) :-
     append(Aux, [Sex], Aux2),
     getParticipantSexs(Rest, Aux2, PartSexs).
 
+getParticipantHeights(PartHeights) :-
+
+    participantPhysicalAtt(PhysicalAtts),
+    getParticipantHeights(PhysicalAtts, [], PartHeights).
+
 getParticipantHeights([], PartHeights, PartHeights).
 
 getParticipantHeights([[_,Height,_]|Rest], Aux, PartHeights) :-
 
     append(Aux, [Height], Aux2),
     getParticipantHeights(Rest, Aux2, PartHeights).
+
+
+getParticipantAges(PartAges) :-
+
+    participantPhysicalAtt(PhysicalAtts),
+    getParticipantAges(PhysicalAtts, [], PartAges).
 
 getParticipantAges([], PartAges, PartAges).
 

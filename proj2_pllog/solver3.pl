@@ -58,10 +58,22 @@ constrainGroups(Activity, NumberOfGroup, NumberOfGroups, ActivityId) :-
     % nl,
 
     get_activity_skills(ActivityId, ActivitySkills),
-    constrainGroupSkills(CurrentGroup, ActivitySkills),
-    constrainGroupSexs(CurrentGroup, ActivityId),
+    get_activity_reqs(ActivityId, ActivityReqs),
 
-    % write(ActivitySkills),
+    nth0(0,ActivityReqs,ReqSex),
+
+    nth0(1, ActivityReqs, MinHeight),
+    nth0(2, ActivityReqs, MaxHeight),
+
+    nth0(3, ActivityReqs, MinAge),
+    nth0(4, ActivityReqs, MaxAge),
+
+    constrainGroupSkills(CurrentGroup, ActivitySkills),
+    constrainGroupSexs(CurrentGroup, ReqSex),
+    constrainGroupHeights(CurrentGroup, MinHeight, MaxHeight),
+
+
+    constrainGroupAges(CurrentGroup, MinAge, MaxAge),
 
     N_Group is NumberOfGroup + 1,
     constrainGroups(Activity, N_Group, NumberOfGroups, ActivityId).
@@ -73,31 +85,38 @@ constrainGroupSkills(Group, [ActivitySkill|Rest]) :-
     
     participantSkills(ParticipantSkills),
 
-    nth0(SkillIndex, ParticipantSkills, ActivitySkill),
-
-    ParticipantIndex1 is div(SkillIndex,2),
-    ParticipantIndex is ParticipantIndex1 + 1,
-
     element(_,Group,ParticipantIndex),
+    relation(ParticipantIndex, ParticipantSkills, ActivitySkill),
 
     constrainGroupSkills(Group, Rest).
 
+constrainGroupSexs(Group, ReqSex) :-
 
-
-constrainGroupSexs(Group, ActivityId) :-
-
-    get_activity_reqs(ActivityId, ActivityReqs),
-    nth0(0,ActivityReqs,ReqSex),
-    
-    participantPhysicalAtt(PhysicalAtts),
-    getParticipantSexs(PhysicalAtts, [], PartSexs),
+    getParticipantSexs(PartSexs),
 
     element(_,Group,ParticipantIndex),
     element(ParticipantIndex, PartSexs, ReqSex).
 
-constrainGroupSexs(_, ActivityId) :-
+constrainGroupSexs(_, 0).
 
-    get_activity_reqs(ActivityId, ActivityReqs),
-    nth0(0,ActivityReqs,0).
+constrainGroupHeights(Group, MinHeight, MaxHeight) :-
+
+    getParticipantHeights(PartHeights),
+
+    element(_,Group, ParticipantIndex),
+    element(ParticipantIndex, PartHeights, Height),
+
+    Height #>= MinHeight,
+    Height #=< MaxHeight.
+
+constrainGroupAges(Group, MinAge, MaxAge) :-
+
+    getParticipantAges(PartAges),
+
+    element(_,Group, ParticipantIndex),
+    element(ParticipantIndex, PartAges, Age),
+
+    Age #>= MinAge,
+    Age #=< MaxAge.
 
 %reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/proj2_pllog/solver3.pl').
