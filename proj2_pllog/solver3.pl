@@ -8,7 +8,6 @@ solver(Result) :-
 
     create_global_matrix(Result),
 
-    
     constrainActivites(Result),
 
 
@@ -60,6 +59,7 @@ constrainGroups(Activity, NumberOfGroup, NumberOfGroups, ActivityId) :-
 
     get_activity_skills(ActivityId, ActivitySkills),
     constrainGroupSkills(CurrentGroup, ActivitySkills),
+    constrainGroupSexs(CurrentGroup, ActivityId),
 
     % write(ActivitySkills),
 
@@ -70,26 +70,34 @@ constrainGroups(Activity, NumberOfGroup, NumberOfGroups, ActivityId) :-
 constrainGroupSkills(_, []).
 
 constrainGroupSkills(Group, [ActivitySkill|Rest]) :-
-
-    % write(ActivitySkill),
     
     participantSkills(ParticipantSkills),
 
     nth0(SkillIndex, ParticipantSkills, ActivitySkill),
 
-    write(SkillIndex),nl,
-
     ParticipantIndex1 is div(SkillIndex,2),
     ParticipantIndex is ParticipantIndex1 + 1,
 
-    write(ParticipantIndex),nl,
-
     element(_,Group,ParticipantIndex),
-
-    
 
     constrainGroupSkills(Group, Rest).
 
 
+
+constrainGroupSexs(Group, ActivityId) :-
+
+    get_activity_reqs(ActivityId, ActivityReqs),
+    nth0(0,ActivityReqs,ReqSex),
+    
+    participantPhysicalAtt(PhysicalAtts),
+    getParticipantSexs(PhysicalAtts, [], PartSexs),
+
+    element(_,Group,ParticipantIndex),
+    element(ParticipantIndex, PartSexs, ReqSex).
+
+constrainGroupSexs(_, ActivityId) :-
+
+    get_activity_reqs(ActivityId, ActivityReqs),
+    nth0(0,ActivityReqs,0).
 
 %reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/proj2_pllog/solver3.pl').
