@@ -1,7 +1,12 @@
-:- dynamic activity/4.
-:- dynamic skill/2.
-:- dynamic participant/6.
-:- dynamic group/2.
+:- dynamic skills/1.
+:- dynamic participants/1.
+:- dynamic participantSkills/1.
+:- dynamic activitiesSkills/1.
+:- dynamic activitiesSkills/1.
+:- dynamic participantPhysicalAtt/1.
+:- dynamic activities/1.
+:- dynamic activityRequirements/1.
+
 
 sex(1,f).
 sex(2,m).

@@ -1,25 +1,21 @@
 :- include('aux.pl').
 
-%reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/proj2_pllog/solver3.pl').
+%reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/proj2_pllog/main.pl').
 
 solver(Result) :-
 
     %Final List has size: number of activities
 
     create_global_matrix(Result),
-
     constrainActivites(Result),
-
-
     flat_global_matrix(Result, FlattenResult),
-    
-    get_participants_size(Number_Participants),
-    
+
+    get_participants_size(Number_Participants),    
     domain(FlattenResult, 1, Number_Participants),
 
     labeling([],FlattenResult).
 
-  
+
 constrainActivites(AllActivities) :-
 
     length(AllActivities, NumberOfActivities),
@@ -119,4 +115,4 @@ constrainGroupAges(Group, MinAge, MaxAge) :-
     Age #>= MinAge,
     Age #=< MaxAge.
 
-%reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/proj2_pllog/solver3.pl').
+%reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/proj2_pllog/main.pl').
