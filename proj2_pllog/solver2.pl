@@ -59,35 +59,6 @@ t(Participant) :-
 
 %Aux Predicates
 
-getParticipantAttSep(PartSexs, PartHeights, PartAges) :-
-
-    participantPhysicalAtt(PhysicalAtts),
-    getParticipantSexs(PhysicalAtts, [], PartSexs),
-    getParticipantHeights(PhysicalAtts, [], PartHeights),
-    getParticipantAges(PhysicalAtts, [], PartAges).
-
-
-
-getParticipantSexs([], PartSexs, PartSexs).
-
-getParticipantSexs([[_,_,Sex]|Rest], Aux, PartSexs) :-
-
-    append(Aux, [Sex], Aux2),
-    getParticipantSexs(Rest, Aux2, PartSexs).
-
-getParticipantHeights([], PartHeights, PartHeights).
-
-getParticipantHeights([[_,Height,_]|Rest], Aux, PartHeights) :-
-
-    append(Aux, [Height], Aux2),
-    getParticipantHeights(Rest, Aux2, PartHeights).
-
-getParticipantAges([], PartAges, PartAges).
-
-getParticipantAges([[Age,_,_]|Rest], Aux, PartAges) :-
-
-    append(Aux, [Age], Aux2),
-    getParticipantAges(Rest, Aux2, PartAges).
 
 
 

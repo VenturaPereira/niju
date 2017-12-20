@@ -38,18 +38,18 @@ participants([
 
 participantSkills([
 
-    1-{1},
-    2-{2,5},
-    3-{3,6},
-    4-{4},
-    5-{5},
-    6-{7,8},
-    7-{6},
-    8-{2},
-    9-{1},
-    10-{2},
-    11-{1},
-    12-{2}
+    1,
+    2,
+    2,
+    4,
+    5,
+    3,
+    6,
+    7,
+    1,
+    8,
+    8,
+    0
 ]).
 
 
@@ -74,24 +74,35 @@ participantPhysicalAtt([
 
 %activity(id, name, required skill, sex, min height, max heihgt, min age, max age (at least one element), number of elements
 activities([
-    [1,'football'],
-    [2,'cards'],
-    [3,'walk'],
-    [4,'fireworks'],
-    [5,'build app'],
-    [6,'meal'],
-    [7,'reading']
+    [1,'football']%,
+    % [2,'cards'],
+    % [3,'walk'],
+    % [4,'fireworks'],
+    % [5,'build app'],
+    % [6,'meal'],
+    % [7,'reading']
     ]).
 
 
 activityRequirements([
 
-    [2,165,300,13,25,6,2],
-    [1,0,300,16,27,4,6],
-    [1,0,300,10,25,2,0],
-    [0,150,300,20,25,2,0],
-    [0,0,300,18,25,2,3],
-    [0,0,300,0,50,5,0],
-    [0,0,300,0,50,3,7]
+    [2,165,300,13,25,6],
+    [1,0,300,16,27,4],
+    [1,0,300,10,25,2],
+    [0,150,300,20,25,2],
+    [0,0,300,18,25,2],
+    [0,0,300,0,50,5],
+    [0,0,300,0,50,3]
 
+]).
+
+activitiesSkills([
+
+    [0, 1, 0, 0, 0, 0, 0, 1], %football
+    [0, 0, 0, 0, 0, 1, 1, 1], %cards
+    [0, 0, 0, 0, 0, 0, 0, 0], %walk
+    [0, 0, 0, 0, 0, 0, 0, 0], %fireworks
+    [0, 0, 1, 0, 0, 0, 0, 0], %build app
+    [0, 0, 0, 0, 0, 0, 0, 0], %meal
+    [0, 0, 0, 0, 0, 0, 1, 1] %reading
 ]).
