@@ -71,13 +71,22 @@ constrainGroupSkills(_, []).
 
 constrainGroupSkills(Group, [ActivitySkill|Rest]) :-
 
-    write(ActivitySkill),
+    % write(ActivitySkill),
     
     participantSkills(ParticipantSkills),
 
-    element(_,Group,Participant),
-    element(Participant,ParticipantSkills,ActivitySkill),
+    nth0(SkillIndex, ParticipantSkills, ActivitySkill),
 
+    write(SkillIndex),nl,
+
+    ParticipantIndex1 is div(SkillIndex,2),
+    ParticipantIndex is ParticipantIndex1 + 1,
+
+    write(ParticipantIndex),nl,
+
+    element(_,Group,ParticipantIndex),
+
+    
 
     constrainGroupSkills(Group, Rest).
 
