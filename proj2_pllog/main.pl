@@ -2,7 +2,7 @@
 
 %reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/proj2_pllog/main.pl').
 
-solver(Result) :-
+solver :-
 
     %Final List has size: number of activities
 
@@ -13,7 +13,29 @@ solver(Result) :-
     get_participants_size(Number_Participants),    
     domain(FlattenResult, 1, Number_Participants),
 
-    labeling([],FlattenResult).
+
+    buildParticipantsPairs(ParticipantsPairs),
+
+    length(ParticipantsPairs, LengthParticipantsPairs),
+    length(Ocurrences, LengthParticipantsPairs),
+
+    append(Result, ActivitiesList),
+    calculateOcurrences(ParticipantsPairs, Ocurrences, ActivitiesList),
+
+
+    %TotalOcurrences in 0 .. 10000,
+    sumOcurrences(Ocurrences,TotalOcurrences),
+
+
+    append(FlattenResult,[TotalOcurrences],FinalResult),
+
+    % length(FinalResult,X),
+
+    % write(X),
+
+    labeling([time_out(3000,_),minimize(TotalOcurrences)],FinalResult),
+
+    print_solution(Result,1).
 
 
 constrainActivites(AllActivities) :-
@@ -114,5 +136,46 @@ constrainGroupAges(Group, MinAge, MaxAge) :-
 
     Age #>= MinAge,
     Age #=< MaxAge.
+
+
+
+calculateOcurrences([],[],_).
+
+calculateOcurrences([Pair|PairsRest], [Ocurrences|OcurrencesRest], ActivitiesList) :-
+    
+    calculatePairOcurrences(Pair,ActivitiesList, 0, Ocurrences),
+    calculateOcurrences(PairsRest,OcurrencesRest, ActivitiesList).
+
+
+calculatePairOcurrences(_, [], Ocurrences, Ocurrences).
+
+calculatePairOcurrences(Pair, [Group|Rest], Aux, Ocurrences) :-
+
+    calculateOcurrenceInGroup(Pair,Group,Ocurrence),
+    Aux2 #= Aux + Ocurrence,
+    calculatePairOcurrences(Pair, Rest, Aux2, Ocurrences).
+
+
+calculateOcurrenceInGroup([P1,P2], Group, Ocurrence) :-
+
+    count(P1,Group,#=, C1),
+    count(P2,Group,#=, C2),
+    
+    Ocurrence #= C1*C2.
+
+
+sumOcurrences(OcurrencesList, Total) :-
+
+    sumOcurrences(OcurrencesList, 0, Total).
+    
+
+sumOcurrences([],Total,Total).
+
+sumOcurrences([Ocurrences|Rest], Aux, Total) :-
+
+    Power2 #= Ocurrences * Ocurrences,
+    Aux2 #= Aux + Power2,
+    sumOcurrences(Rest, Aux2, Total).
+
 
 %reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/proj2_pllog/main.pl').

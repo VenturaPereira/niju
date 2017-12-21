@@ -27,7 +27,7 @@ skills([
 %participant(id, name, list of skils, age, height, sex)
 
 participants([
-        [1,'João'],
+        [1,'Joao'],
         [2,'Pedro'],
         [3,'Ventura'],
         [4,'Luis'],
@@ -92,17 +92,17 @@ participantPhysicalAtt([
 activities([
     [1,'football'],
     [2,'cards'],
-    [3,'walk'],
-    [4,'fireworks'],
-    [5,'build app'],
-    [6,'meal'],
-    [7,'reading']
+    [3,'walk']%,
+    % [4,'fireworks'],
+    % [5,'build app'],
+    % [6,'meal'],
+    % [7,'reading']
     ]).
 
 
 activityRequirements([
 
-    [1,175,300,25,30,6],
+    [2,175,300,25,30,6],
     [1,0,300,16,27,6],
     [1,0,300,10,25,6],
     [0,150,300,20,25,5],
