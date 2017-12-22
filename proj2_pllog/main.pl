@@ -2,7 +2,7 @@
 
 %reconsult('/Users/joaofurriel/Documents/Estudo/MIEIC/Ano3/PLOG/Projecto/proj2_pllog/main.pl').
 
-solver :-
+solver(TimeOut) :-
 
     %Final List has size: number of activities
 
@@ -33,9 +33,17 @@ solver :-
 
     % write(X),
 
-    labeling([time_out(3000,_),minimize(TotalOcurrences)],FinalResult),
+    MiliSeconds is TimeOut * 1000,
 
-    print_solution(Result,1).
+    labeling([down,time_out(MiliSeconds,_),minimize(TotalOcurrences)],FinalResult),
+
+    % labeling([down,minimize(TotalOcurrences)],FinalResult),
+
+
+    print_solution(Result,1),
+    nl,
+    write('co-ocorrences factor: '),
+    write(TotalOcurrences).
 
 
 constrainActivites(AllActivities) :-
@@ -110,6 +118,7 @@ constrainGroupSkills(Group, [ActivitySkill|Rest]) :-
 
 constrainGroupSexs(Group, ReqSex) :-
 
+    ReqSex > 0,
     getParticipantSexs(PartSexs),
 
     element(_,Group,ParticipantIndex),

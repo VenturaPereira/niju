@@ -263,6 +263,7 @@ flat_global_matrix(GlobalMatrix, Aux, FlattenMatrix, Row, NumberOfRows) :-
 
 print_sex(1) :- write('F').
 print_sex(2) :- write('M').
+print_sex(0) :- write('None').
 
 print_Spaces(0).
 
